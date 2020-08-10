@@ -1,9 +1,13 @@
 # cg
-Compare to hygen, yo. What I need 
-1. template is runnable as normal project. 
-2. instinct command with folder structure.
-3. quick generate tempalte from project.
-4. support prompt and args replacement.
+
+Compare to hygen, yo. What I need
+
+1. template runable.
+2. instinct command.
+3. quick project to template and vice versa.
+4. prompt and args.
+
+And I think. Basic bash command should do the trick. With the powe of find 
 
 # API Design
 ``` bash
