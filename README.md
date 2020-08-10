@@ -3,6 +3,7 @@
 Compare to hygen, yo. What I need
 
 1. template runable.
+  1. respect .gitignore
 2. instinct command.
 3. quick project to template and vice versa.
 4. prompt and args.
