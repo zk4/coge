@@ -7,7 +7,7 @@ Compare to hygen, yo. What I need
 3. quick project to template and vice versa.
 4. prompt and args.
 
-And I think. Basic bash command should do the trick. With the powe of find 
+And I think. Basic bash command should do the trick. 
 
 # API Design
 ``` bash
