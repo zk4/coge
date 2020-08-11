@@ -10,7 +10,11 @@ logger = logging.getLogger(__name__)
 from os.path import join, isfile,basename
 from pathlib import Path
 from distutils.dir_util import copy_tree
+import subprocess
 
+def nonIgnoreFiles():
+    list_of_files = subprocess.check_output("git ls-files", shell=True).splitlines()
+    return list_of_files
 
 def copying(src,dest):
     copy_tree(src, dest)
@@ -19,9 +23,31 @@ def fullReplace(root,oldKey,newKey):
     if oldKey == newKey or len(newKey)==0:
         return
 
+    common_ignore=[".DS_Store",'.pyc',".o",".obj",".class"]
     for dname, dirs, files in os.walk(root,topdown=False):
         for filename in files:
+
+            # this is evil file from MAC
+            isbreak= False
+            for ci in common_ignore:
+                if filename.endswith(ci):
+                    isbreak = True
+                    break
+
+            if isbreak:
+                continue
+
             oldfile = join(dname,filename)
+
+            print(oldfile)
+            contents = str(Path(oldfile).read_text())
+
+
+            contents = contents.replace(oldKey,newKey)
+
+            with open(oldfile,"w") as f:
+                f.write(contents)
+
             if isfile(oldfile):
                 if oldKey in filename:
                     newfile = join(dname,filename.replace(oldKey,newKey))

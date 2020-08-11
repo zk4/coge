@@ -38,7 +38,7 @@ main:
 
 run:
 	#python3 -m cg eat -k b
-	python3 -m cg c opengl bestpractice bestpractice:app @:bad
+	python3 -m cg python bestpractice bestpractice:cog @:cog
 
 wrun:
 	watchexec -ce py 'python3 -m cg eat -c 2'

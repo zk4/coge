@@ -19,7 +19,7 @@ if __name__ == '__main__':
     setup(
         # used in pip install and uninstall 
         # pip install cg
-        name='cg',
+        name='cgr',
         version=__version__,
         author=__author__,
         author_email=__author_email__,
