@@ -48,7 +48,7 @@ What cg does:
 
 # help
 ```
-usage: cg [-h] [-a ARG_PREFIX] [-l] [-d DEPTH] [o [o ...]]
+usage: cg [-h] [-a ARG_PREFIX] [-l] [-r] [-d DEPTH] [o [o ...]]
 
 positional arguments:
   o                     folder or newkey:oldkey (default: None)
@@ -58,8 +58,8 @@ optional arguments:
   -a ARG_PREFIX, --arg_prefix ARG_PREFIX
                         ex: CG_ARG__ (default: CG_ARG__)
   -l, --list            list folders (default: False)
+  -r, --link_tplt       link cwd template to CG_TMPLS (default: False)
   -d DEPTH, --depth DEPTH
                         list depth (default: 3)
-
 
 ``` 
