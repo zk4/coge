@@ -22,6 +22,10 @@ make install
 ```
 
 # usage
+```
+export CG_TMPLS="<your_template_folder>"
+```
+
 ## 1
 ``` bash
 cgr js react oldkey:newkey :newkey0 :newkey1 @:destname 
