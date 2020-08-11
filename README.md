@@ -1,5 +1,5 @@
 # cg
-Simple yet powful.
+Simple yet powerful.
 
 Compare to hygen, yo. What I need
 
