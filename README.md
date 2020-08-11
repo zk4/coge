@@ -12,8 +12,8 @@ Compare to hygen, yo.
 **What I only need:**
 1. [x] template is runable as normal prj. No more \$placehold\$ stuff.
 2. [x] instinct command follows the folder path.
+4. [x] quick project to template and vice versa.
 3. respect .gitignore.
-4. quick project to template and vice versa.
 5. prompt available.
 
 # install

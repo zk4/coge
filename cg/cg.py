@@ -39,8 +39,12 @@ def fullReplace(root,oldKey,newKey):
 
             oldfile = join(dname,filename)
 
-            print(oldfile)
-            contents = str(Path(oldfile).read_text())
+            contents = ""
+            try:
+                contents = str(Path(oldfile).read_text())
+            except Exception as e:
+                print("error: pass", e)
+                continue
 
 
             contents = contents.replace(oldKey,newKey)
@@ -128,6 +132,6 @@ def createParse():
 
     parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: CG_ARG__', default="CG_ARG__")  
     parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,) 
-    parser.add_argument('-r', '--reverse_tplt', help='link cwd template to CG_TMPLS', default=False, action='store_true' ) 
+    parser.add_argument('-r', '--link_tplt', help='link cwd template to CG_TMPLS', default=False, action='store_true' ) 
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  
     return parser
