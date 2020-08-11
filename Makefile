@@ -37,7 +37,7 @@ main:
 	python3 main.py eat -c 2
 
 run:
-	python3 -m cg eat -c 2
+	python3 -m cg eat -k b
 
 wrun:
 	watchexec -ce py 'python3 -m cg eat -c 2'
