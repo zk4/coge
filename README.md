@@ -16,6 +16,11 @@ Compare to hygen, yo.
 4. quick project to template and vice versa.
 5. prompt available.
 
+# install
+```
+make install
+```
+
 # API design 
 which one you prefer?
 ```
