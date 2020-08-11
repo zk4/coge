@@ -21,20 +21,10 @@ Compare to hygen, yo.
 make install
 ```
 
-# API design 
-which one you prefer?
-```
-# no slash
-cg js react oldkey:newkey :newkey2 @:destname 
-
-# with slash
-cg js/react oldkey:newkey :newkey2 @:destname 
-```
-
-# Scenario
+# usage
 ## 1
 ``` bash
-cg js react oldkey:newkey :newkey0 :newkey1 @:destname 
+cgr js react oldkey:newkey :newkey0 :newkey1 @:destname 
 ```
 - copy $CG_TMPLS/js/react to $PWD/destname
 - change all names from oldkey to newkey,  from  CG_ARG__0 to newkey0 ,from  CG_ARG__1 to newkey1
@@ -47,3 +37,21 @@ cg js react
 
 
 
+
+# help
+```
+usage: cg [-h] [-a ARG_PREFIX] [-l] [-d DEPTH] [o [o ...]]
+
+positional arguments:
+  o                     folder or newkey:oldkey (default: None)
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -a ARG_PREFIX, --arg_prefix ARG_PREFIX
+                        ex: CG_ARG__ (default: CG_ARG__)
+  -l, --list            list folders (default: False)
+  -d DEPTH, --depth DEPTH
+                        list depth (default: 3)
+
+
+``` 
