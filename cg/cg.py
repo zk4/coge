@@ -9,14 +9,16 @@ setup_logging()
 logger = logging.getLogger(__name__)
 from os.path import join, isfile,basename
 from pathlib import Path
+from distutils.dir_util import copy_tree
 
 
 def copying(src,dest):
-    pass
+    copy_tree(src, dest)
 
 def fullReplace(root,oldKey,newKey):
     if oldKey == newKey or len(newKey)==0:
         return
+
     for dname, dirs, files in os.walk(root,topdown=False):
         for filename in files:
             oldfile = join(dname,filename)
@@ -35,7 +37,10 @@ def main(root,args):
     keypais={}
     prefix = args.arg_prefix or "CG_ARG__"
     print(args.magic)
+
     idx = 0
+
+    target_foldername = "app"
     for m in args.magic:
         if ":" not in m:
             root = join(root,m)
@@ -46,14 +51,22 @@ def main(root,args):
             if key == val:
                 print(f"keypair: {key}:{val} must not be the same!")
                 return 
+            if key=="@":
+                target_foldername=val
+                continue
             if len(key.strip()) == 0:
                 key = prefix +str(idx)
                 idx+=1
             keypais[key] = val
         
     print(root,keypais)
-    return
-    fullReplace(tmpls_folder,oldKey,newKey)
+
+    cwd = os.getcwd()
+    dest = join(cwd,target_foldername)
+    copying(root,dest)
+
+    for key, val in keypais.items(): 
+        fullReplace(dest,key,val)
 
 def list(root,depth):
     stuff = os.path.abspath(os.path.expanduser(os.path.expandvars(root)))
