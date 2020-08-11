@@ -7,26 +7,30 @@ import os
 # don`t remove this line
 setup_logging()
 logger = logging.getLogger(__name__)
-from os.path import join, isfile
+from os.path import join, isfile,basename
+from pathlib import Path
 
 
 
-def feed(src,dest):
-    replacement = """some
-    multi-line string"""
-
-    for dname, dirs, files in os.walk(src,topdown=False):
-        print(dname, dirs, files)
-        # continue
+def fullReplace(root,oldKey,newKey):
+    if oldKey == newKey or len(newKey)==0:
+        return
+    for dname, dirs, files in os.walk(root,topdown=False):
+        for filename in files:
+            oldfile = join(dname,filename)
+            if isfile(oldfile):
+                if oldKey in filename:
+                    newfile = join(dname,filename.replace(oldKey,newKey))
+                    print(oldfile,newfile)
+                    os.rename(oldfile,newfile)
 
         # rename folder 
-        destfolder = join("/".join(dname.split("/")[:-1]),dest)
-        os.rename(dname,destfolder)
-        for filename in files:
-            oldfile = join(destfolder,src)
-            if isfile(oldfile):
-                os.rename(oldfile,join(destfolder,dest))
+        if oldKey in basename(dname):
+            destfolder = join(Path(dname).parent,basename(dname).replace(oldKey,newKey))
+            os.rename(dname,destfolder)
 
+def writing():
+    pass
         # rename file
         # replace filecontent
         # for fname in files:
@@ -36,11 +40,9 @@ def feed(src,dest):
             # s = s.replace("${replace}", replacement)
             # with open(fpath, "w+") as f:
                 # f.write(s)
-    return 2
 
 def main(args):
-    ret = feed(args.src,args.dest)
-    logger.debug(f'feed({args.src})={ret}')
+    fullReplace(args.root,args.oldKey,args.newKey)
 
 def entry_point():
     parser = createParse()
@@ -49,9 +51,10 @@ def entry_point():
 
 def createParse():
     parser = argparse.ArgumentParser( formatter_class=argparse.ArgumentDefaultsHelpFormatter, description="")
-    subparsers = parser.add_subparsers()
-    eat_parser = subparsers.add_parser('eat',formatter_class=argparse.ArgumentDefaultsHelpFormatter, description="",  help='sub command demo')
-    eat_parser.add_argument('-s', '--src',type=str,required=False, help='src', default="")  
-    eat_parser.add_argument('-d', '--dest',type=str,required=False, help='dest', default="")  
-    eat_parser.add_argument('-t', '--test', help='test questions', default=False, action='store_true') 
+    # subparsers = parser.add_subparsers()
+    # eat_parser = subparsers.add_parser('eat',formatter_class=argparse.ArgumentDefaultsHelpFormatter, description="",  help='sub command demo')
+    parser.add_argument('-r', '--root',type=str,required=False, help='root', default="")  
+    parser.add_argument('-o', '--oldKey',type=str,required=False, help='oldKey', default="")  
+    parser.add_argument('-n', '--newKey',type=str,required=False, help='newKey', default="")  
+    parser.add_argument('-t', '--test', help='test questions', default=False, action='store_true') 
     return parser
