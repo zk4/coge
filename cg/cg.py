@@ -110,17 +110,24 @@ def entry_point():
         print("env CG_TMPLS is not definded!")
         return
 
-    if mainArgs.list:
+    if mainArgs.link_tplt:
+        link()
+    elif mainArgs.list:
         listTarget(root,mainArgs.depth)
     else:
         main(root,mainArgs)
 
+def link():
+    subprocess.check_output("ln  -s $PWD $CG_TMPLS", shell=True)
+
 def createParse():
     parser = argparse.ArgumentParser( formatter_class=argparse.ArgumentDefaultsHelpFormatter, description="")
+
     parser.add_argument('magic', metavar="o", type=str, nargs='*',
             help='folder or newkey:oldkey')
 
     parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: CG_ARG__', default="CG_ARG__")  
     parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,) 
+    parser.add_argument('-r', '--reverse_tplt', help='link cwd template to CG_TMPLS', default=False, action='store_true' ) 
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  
     return parser
