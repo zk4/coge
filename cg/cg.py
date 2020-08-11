@@ -11,20 +11,38 @@ from os.path import join, isfile,basename
 from pathlib import Path
 from distutils.dir_util import copy_tree
 import subprocess
+import shutil
 
-def nonIgnoreFiles():
-    list_of_files = subprocess.check_output("git ls-files", shell=True).splitlines()
+common_ignore=[".DS_Store",'.pyc',".o",".obj",".class"]
+
+# this command will respect .gitignore
+def gitLsFiles(src):
+    list_of_files = subprocess.check_output(f"cd {src}  && git ls-files", shell=True).splitlines()
     return list_of_files
 
 def copying(src,dest):
-    # todo add ignore
-    copy_tree(src, dest)
+    # copy_tree(src, dest)
+    for f in gitLsFiles(src):
+        f = f.decode('utf8')
+        dest_fpath = join(dest,f)
+        os.makedirs(os.path.dirname(dest_fpath), exist_ok=True)
+        print("===",join(src,f), dest_fpath)
+        isbreak= False
+        for ci in common_ignore:
+            print(type(f),f,"-->",type(ci),ci)
+            if f.endswith(ci):
+                isbreak = True
+                print("pass",dest_fpath)
+                break
+        if isbreak:
+            continue
+        shutil.copy(join(src,f), join(dest,f))
+
 
 def fullReplace(root,oldKey,newKey):
     if oldKey == newKey or len(newKey)==0:
         return
 
-    common_ignore=[".DS_Store",'.pyc',".o",".obj",".class"]
     for dname, dirs, files in os.walk(root,topdown=False):
         for filename in files:
 
