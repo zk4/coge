@@ -1,27 +1,41 @@
 # cg
-Simple yet powerful.
+Simple yet powerful code generator.
+Make use of your shell as possiable as cg can.
 
-Compare to hygen, yo. What I need
+Compare to hygen, yo.
+- yo is way too slow and complicated.
+- hygen pollutes all template files, and only support ejs.
 
-1. [x] template is runable as normal prj. No more $placehold$ stuff.
-2. [x] instinct command follow the folder path.
+**What I only need:**
+1. [x] template is runable as normal prj. No more \$placehold\$ stuff.
+2. [x] instinct command follows the folder path.
 3. respect .gitignore.
 4. quick project to template and vice versa.
-5. prompt and args.
-6. old template project is updatable from updated template.
+5. prompt available.
 
+# API design 
+which one you prefer?
+```
+# no slash
+cg js react oldkey:newkey :newkey2 @:destname 
 
-
-
-# API Design
-``` bash
+# with slash
 cg js/react oldkey:newkey :newkey2 @:destname 
 ```
 
-inner process:
-- find  $CG_TEMPLATE_FODLER/js/react/ 
-- replace `CG_PLACE_HOLDER` with `hello_world` of filename or content, what is `CG_PLACE_HOLDER`? what ever you defined as long as it won't conflict with normal string. like ARGS__haha
-- copy $CG_TEMPLATE_FODLER/js/react/  to current folder named hello_world
+# Scenario
+## 1
+``` bash
+cg js react oldkey:newkey :newkey0 :newkey1 @:destname 
+```
+- copy $CG_TMPLS/js/react to $PWD/destname
+- change all names from oldkey to newkey,  from  CG_ARG__0 to newkey0 ,from  CG_ARG__1 to newkey1
+
+## 2
+``` bash
+cg js react
+```
+- Just copy $CG_TMPLS/js/react to $PWD/app
 
 
 
