@@ -17,6 +17,7 @@ def nonIgnoreFiles():
     return list_of_files
 
 def copying(src,dest):
+    # todo add ignore
     copy_tree(src, dest)
 
 def fullReplace(root,oldKey,newKey):
