@@ -26,6 +26,8 @@ make install
 ``` bash
 cgr js react oldkey:newkey :newkey0 :newkey1 @:destname 
 ```
+What cg does:
+
 - copy $CG_TMPLS/js/react to $PWD/destname
 - change all names from oldkey to newkey,  from  CG_ARG__0 to newkey0 ,from  CG_ARG__1 to newkey1
 
@@ -33,6 +35,7 @@ cgr js react oldkey:newkey :newkey0 :newkey1 @:destname
 ``` bash
 cg js react
 ```
+What cg does:
 - Just copy $CG_TMPLS/js/react to $PWD/app
 
 
