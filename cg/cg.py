@@ -68,7 +68,7 @@ def main(root,args):
     for key, val in keypais.items(): 
         fullReplace(dest,key,val)
 
-def list(root,depth):
+def listTarget(root,depth):
     stuff = os.path.abspath(os.path.expanduser(os.path.expandvars(root)))
 
     for root,dirs,files in os.walk(stuff):
@@ -85,20 +85,16 @@ def entry_point():
         return
 
     if mainArgs.list:
-        list(root,mainArgs.depth)
+        listTarget(root,mainArgs.depth)
     else:
         main(root,mainArgs)
 
 def createParse():
     parser = argparse.ArgumentParser( formatter_class=argparse.ArgumentDefaultsHelpFormatter, description="")
-    # subparsers = parser.add_subparsers()
-    # eat_parser = subparsers.add_parser('eat',formatter_class=argparse.ArgumentDefaultsHelpFormatter, description="",  help='sub command demo')
     parser.add_argument('magic', metavar="o", type=str, nargs='*',
-            help='folder or  newkey:oldkey')
+            help='folder or newkey:oldkey')
 
     parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: CG_ARG__', default="CG_ARG__")  
-    # parser.add_argument('-o', '--oldKey',type=str,required=False, help='oldKey', default="")  
-    # parser.add_argument('-n', '--newKey',type=str,required=False, help='newKey', default="")  
-    parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true') 
+    parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,) 
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  
     return parser
