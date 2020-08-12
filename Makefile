@@ -56,7 +56,7 @@ upload-to-test: rm freeze
 	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 
-upload-to-prod: rm freeze
+upload-to-prod: rm 
 	python3 setup.py bdist_wheel --universal
 	twine upload dist/*
 
