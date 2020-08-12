@@ -179,6 +179,7 @@ def entry_point():
         fallbackdir= os.path.expanduser("~/.config/.code_template")
         Path(fallbackdir).mkdir(parents=True, exist_ok=True)
         logger.warning(f"env COGE_TMPLS is not definded! use default tmplts location: {fallbackdir}")
+
     
     if mainArgs.link_tplt:
         link()
