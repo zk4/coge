@@ -22,7 +22,7 @@ make install
 
 # usage
 ```
-export CG_TMPLS="<your_template_folder>"
+export COGE_TMPLS="<your_template_folder>"
 ```
 
 ## 1
@@ -31,15 +31,15 @@ coge js react oldkey:newkey :newkey0 :newkey1 @:destname
 ```
 What coge does:
 
-- copy $CG_TMPLS/js/react to $PWD/destname
-- change all names from oldkey to newkey,  from  CG_ARG__0 to newkey0 ,from  CG_ARG__1 to newkey1
+- copy $COGE_TMPLS/js/react to $PWD/destname
+- change all names from oldkey to newkey,  from  COGE_ARG__0 to newkey0 ,from  COGE_ARG__1 to newkey1
 
 ## 2
 ``` bash
 coge js react
 ```
 What coge does:
-- Just copy $CG_TMPLS/js/react to $PWD/app
+- Just copy $COGE_TMPLS/js/react to $PWD/app
 
 
 
@@ -54,11 +54,11 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -a ARG_PREFIX, --arg_prefix ARG_PREFIX
-                        ex: CG_ARG__ (default: CG_ARG__)
+                        ex: CG_ARG__ (default: COGE_ARG__)
   -l, --list            list folders (default: False)
-  -r, --link_tplt       link cwd template to CG_TMPLS (default: False)
+  -r, --link_tplt       link cwd template to COGE_TMPLS (default: False)
   -w, --allow_git_dirty
-                        by default, your CG_TMPLS must git clean, because coge
+                        by default, your COGE_TMPLS must git clean, because coge
                         relies on git command if you are in a git repo
                         (default: False)
   -d DEPTH, --depth DEPTH
