@@ -16,7 +16,12 @@ import shutil
 common_ignore=[".DS_Store",'.pyc',".o",".obj",".class","Pods"]
 
 # this command will respect .gitignore
+def isGitFolderClean(src):
+    list_of_files = subprocess.check_output(f"cd {src}  && git status -s", shell=True).splitlines()
+    return len(list_of_files) == 0
+
 def gitLsFiles(src):
+    # todo  you need to commit your files first
     # print("src",f"cd {src}  && git ls-files")
     list_of_files = subprocess.check_output(f"cd {src}  && git ls-files", shell=True).splitlines()
     return list_of_files
@@ -24,6 +29,10 @@ def gitLsFiles(src):
 def copying(src,dest):
     try:
         gitfiles = gitLsFiles(src)
+        if not isGitFolderClean(src):
+            print(f"{src} is not clean, commit your changes or git reset.")
+            sys.exit(0);
+
         for f in gitfiles:
             try:
                 f = f.decode('utf8')
@@ -83,7 +92,7 @@ def fullReplace(root,oldKey,newKey):
             if isfile(oldfile):
                 if oldKey in filename:
                     newfile = join(dname,filename.replace(oldKey,newKey))
-                    print(oldfile,newfile)
+                    # print(oldfile,newfile)
                     os.rename(oldfile,newfile)
 
         # rename folder 
@@ -117,7 +126,7 @@ def main(root,args):
                 idx+=1
             keypais[key] = val
         
-    print(root,keypais)
+    # print(root,keypais)
 
     if args.list or len(args.magic)==0:
         listTarget(root,args.depth)
