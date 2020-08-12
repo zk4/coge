@@ -19,7 +19,7 @@ if __name__ == '__main__':
     setup(
         # used in pip install and uninstall 
         # pip install cg
-        name='cg',
+        name='coge',
         version=__version__,
         author=__author__,
         author_email=__author_email__,
@@ -36,7 +36,7 @@ if __name__ == '__main__':
         install_requires=open('requirements.txt', 'r').read().strip().split(),
         entry_points={
             'console_scripts': [
-                'cg = cg:entry_point'
+                'coge = cg:entry_point'
             ]
         },
         classifiers=[

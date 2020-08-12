@@ -33,6 +33,10 @@ def copying(allow_git_dirty, src,dest):
             logger.critical(f"{src} is not clean, commit your changes or git reset. or use -w to ignore this check")
             sys.exit(0);
 
+        logger.info(f'{src} is git repo')
+
+        if len(gitfiles)==0:
+            logger.warning(f'maybe you should commit your chagnes if you use -w, Nothing found with git ls-files in {src}')
         for f in gitfiles:
             try:
                 f = f.decode('utf8')
@@ -146,7 +150,7 @@ def listTarget(root,depth):
 
     for dname,dirs,files in os.walk(stuff):
         cdepth = dname[len(stuff):].count(os.sep)
-        if basename(dname).startswith(".") or ".git" in dname:
+        if basename(dname).startswith(".") or ".git" in dname or "__pycache__" in dname:
             continue
         if  cdepth < depth:
             print("     "*(cdepth-1) , basename(dname))
@@ -177,5 +181,5 @@ def createParse():
     parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,) 
     parser.add_argument('-r', '--link_tplt', help='link cwd template to CG_TMPLS', default=False, action='store_true' ) 
     parser.add_argument('-w', '--allow_git_dirty', help='by default, your CG_TMPLS must git clean, because cg relies on git command if you are in a git repo', default=False, action='store_true' ) 
-    parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=4)  
+    parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  
     return parser

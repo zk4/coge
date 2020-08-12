@@ -3,7 +3,7 @@
 Simple yet powerful code generator.
 Make use of your shell as possiable as cg can.
 
-Pity, the name cg is taken by others. use `cgr` in cmdline. maybe you should `alias cg=cgr`
+Pity, the name cg is taken by others. use `coge` in cmdline. maybe you should `alias cg=cgr`
 
 Compare to hygen, yo.
 - yo is way too slow and complicated.
