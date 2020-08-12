@@ -167,10 +167,14 @@ def listTarget(root,depth):
 def entry_point():
     parser = createParse()
     mainArgs=parser.parse_args()
-    root  = os.environ.get("COGE_TMPLS") or os.environ.get("CG_TMPLS")
-    if root is None:
-        print("env COGE_TMPLS is not definded!")
-        return
+    env_root = os.environ.get("COGE_TMPLS") or os.environ.get("CG_TMPLS")
+    fallbackdir= os.path.expanduser("~/.config/.code_template")
+    if env_root is None:
+        logger.warning(f"env COGE_TMPLS is not definded! use default tmplts location: {fallbackdir}")
+
+    
+    Path(fallbackdir).mkdir(parents=True, exist_ok=True)
+    root  = env_root or "~/.config/.code_template"
 
     if mainArgs.link_tplt:
         link()
@@ -187,7 +191,7 @@ def createParse():
     parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: COGE_ARG__', default="COGE_ARG__")  
     parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,) 
     parser.add_argument('-r', '--link_tplt', help='link cwd template to COGE_TMPLS', default=False, action='store_true' ) 
-    parser.add_argument('-i', '--init', help='init your CG_TMPLS location to ~/.config/.code_template', default=False, action='store_true' ) 
+    parser.add_argument('-i', '--init', help='init your COGE_TMPLS location to ~/.config/.code_template', default=False, action='store_true' ) 
     parser.add_argument('-w', '--allow_git_dirty', help='by default, your CG_TMPLS must git clean, because coge relies on git command if you are in a git repo', default=False, action='store_true' ) 
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  
     parser.add_argument('magic', metavar="magic", type=str, nargs='*', 
