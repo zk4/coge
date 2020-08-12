@@ -3,8 +3,6 @@
 Simple yet powerful code generator.
 Make use of your shell as possiable as coge can.
 
-Pity, the name coge is taken by others. use `coge` in cmdline. maybe you should `alias coge=cgr`
-
 Compare to hygen, yo.
 - yo is way too slow and complicated.
 - hygen pollutes all template files, and only support ejs.
@@ -29,7 +27,7 @@ export CG_TMPLS="<your_template_folder>"
 
 ## 1
 ``` bash
-cgr js react oldkey:newkey :newkey0 :newkey1 @:destname 
+coge js react oldkey:newkey :newkey0 :newkey1 @:destname 
 ```
 What coge does:
 
@@ -48,7 +46,7 @@ What coge does:
 
 # help
 ```
-usage: coge [-h] [-a ARG_PREFIX] [-l] [-r] [-d DEPTH] [o [o ...]]
+usage: coge [-h] [-a ARG_PREFIX] [-l] [-r] [-w] [-d DEPTH] [o [o ...]]
 
 positional arguments:
   o                     folder or newkey:oldkey (default: None)
@@ -59,6 +57,10 @@ optional arguments:
                         ex: CG_ARG__ (default: CG_ARG__)
   -l, --list            list folders (default: False)
   -r, --link_tplt       link cwd template to CG_TMPLS (default: False)
+  -w, --allow_git_dirty
+                        by default, your CG_TMPLS must git clean, because coge
+                        relies on git command if you are in a git repo
+                        (default: False)
   -d DEPTH, --depth DEPTH
                         list depth (default: 3)
 
