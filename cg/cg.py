@@ -26,11 +26,11 @@ def gitLsFiles(src):
     list_of_files = subprocess.check_output(f"cd {src}  && git ls-files", shell=True).splitlines()
     return list_of_files
 
-def copying(src,dest):
+def copying(allow_git_dirty, src,dest):
     try:
         gitfiles = gitLsFiles(src)
-        if not isGitFolderClean(src):
-            logger.critical(f"{src} is not clean, commit your changes or git reset.")
+        if not allow_git_dirty and not isGitFolderClean(src):
+            logger.critical(f"{src} is not clean, commit your changes or git reset. or use -w to ignore this check")
             sys.exit(0);
 
         for f in gitfiles:
@@ -135,7 +135,8 @@ def main(root,args):
     if os.path.isdir(dest):
         logger.critical(f"{dest} exists. rm it first!")
         return 
-    copying(root,dest)
+    allow_git_dirty = args.allow_git_dirty
+    copying(allow_git_dirty,root,dest)
 
     for key, val in keypais.items(): 
         fullReplace(dest,key,val)
@@ -175,5 +176,6 @@ def createParse():
     parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: CG_ARG__', default="CG_ARG__")  
     parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,) 
     parser.add_argument('-r', '--link_tplt', help='link cwd template to CG_TMPLS', default=False, action='store_true' ) 
+    parser.add_argument('-w', '--allow_git_dirty', help='by default, your CG_TMPLS must git clean, because cg relies on git command if you are in a git repo', default=False, action='store_true' ) 
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=4)  
     return parser
