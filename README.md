@@ -1,9 +1,9 @@
-# cg
+# coge
 
 Simple yet powerful code generator.
-Make use of your shell as possiable as cg can.
+Make use of your shell as possiable as coge can.
 
-Pity, the name cg is taken by others. use `coge` in cmdline. maybe you should `alias cg=cgr`
+Pity, the name coge is taken by others. use `coge` in cmdline. maybe you should `alias coge=cgr`
 
 Compare to hygen, yo.
 - yo is way too slow and complicated.
@@ -31,16 +31,16 @@ export CG_TMPLS="<your_template_folder>"
 ``` bash
 cgr js react oldkey:newkey :newkey0 :newkey1 @:destname 
 ```
-What cg does:
+What coge does:
 
 - copy $CG_TMPLS/js/react to $PWD/destname
 - change all names from oldkey to newkey,  from  CG_ARG__0 to newkey0 ,from  CG_ARG__1 to newkey1
 
 ## 2
 ``` bash
-cg js react
+coge js react
 ```
-What cg does:
+What coge does:
 - Just copy $CG_TMPLS/js/react to $PWD/app
 
 
@@ -48,7 +48,7 @@ What cg does:
 
 # help
 ```
-usage: cg [-h] [-a ARG_PREFIX] [-l] [-r] [-d DEPTH] [o [o ...]]
+usage: coge [-h] [-a ARG_PREFIX] [-l] [-r] [-d DEPTH] [o [o ...]]
 
 positional arguments:
   o                     folder or newkey:oldkey (default: None)

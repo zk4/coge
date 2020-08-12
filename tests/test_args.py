@@ -1,6 +1,6 @@
 
 import pytest
-from cg import main,createParse
+from coge import main,createParse
 
 @pytest.fixture
 def parser():

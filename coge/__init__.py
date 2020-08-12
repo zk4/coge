@@ -1,4 +1,4 @@
-from .cg import (entry_point,
+from .coge import (entry_point,
                      main,
                      createParse)
 

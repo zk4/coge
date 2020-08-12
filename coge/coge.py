@@ -54,7 +54,7 @@ def copying(allow_git_dirty, src,dest):
             if isbreak:
                 continue
             shutil.copy(join(src,f), join(dest,f))
-            logger.info("cg --> "+join(dest,f))
+            logger.info("coge --> "+join(dest,f))
     except Exception as e:
         logger.exception(e)
         copy_tree(src, dest)
@@ -180,6 +180,6 @@ def createParse():
     parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: CG_ARG__', default="CG_ARG__")  
     parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,) 
     parser.add_argument('-r', '--link_tplt', help='link cwd template to CG_TMPLS', default=False, action='store_true' ) 
-    parser.add_argument('-w', '--allow_git_dirty', help='by default, your CG_TMPLS must git clean, because cg relies on git command if you are in a git repo', default=False, action='store_true' ) 
+    parser.add_argument('-w', '--allow_git_dirty', help='by default, your CG_TMPLS must git clean, because coge relies on git command if you are in a git repo', default=False, action='store_true' ) 
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  
     return parser

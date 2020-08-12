@@ -20,29 +20,29 @@ test: rm
 coverage-html:
 	# --cov where you want to cover
 	#  tests  where your test code is 
-	pytest --cov=cg/ --cov-report=html tests/
+	pytest --cov=coge/ --cov-report=html tests/
 	open htmlcov/index.html
 
 coverage:
-	pytest --cov=cg/ tests/
+	pytest --cov=coge/ tests/
 
 
 install: uninstall
 	pip3 install . 
 
 uninstall:
-	pip3 uninstall  -y cg
+	pip3 uninstall  -y coge
 
 main:
 	python3 main.py eat -c 2
 
 run:
-	#python3 -m cg eat -k b
-	#python3 -m cg python bestpractice bestpractice:cog @:cog
-	python3 -m cg x-engine-module-template @:x-engine-module-blue
+	#python3 -m coge eat -k b
+	#python3 -m coge python bestpractice bestpractice:cog @:cog
+	python3 -m coge x-engine-module-template @:x-engine-module-blue
 
 wrun:
-	watchexec -ce py 'python3 -m cg eat -c 2'
+	watchexec -ce py 'python3 -m coge eat -c 2'
 
 all: rm uninstall install run 
 

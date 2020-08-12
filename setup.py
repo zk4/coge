@@ -11,14 +11,14 @@ __version__ = '.'.join(map(str, VERSION[0:3]))
 __description__ = '''this is a description'''
 __author__ = 'zk'
 __author_email__ = 'liuzq7@gmail.com'
-__homepage__ = 'https://github.com/zk4/cg'
+__homepage__ = 'https://github.com/zk4/coge'
 __download_url__ = '%s/archive/master.zip' % __homepage__
 __license__ = 'BSD'
 
 if __name__ == '__main__':
     setup(
         # used in pip install and uninstall 
-        # pip install cg
+        # pip install coge
         name='coge',
         version=__version__,
         author=__author__,
@@ -32,11 +32,11 @@ if __name__ == '__main__':
         python_requires='>3.0.0',
         zip_safe=False,
         packages=find_packages(exclude=['tests', 'tests.*']),
-        package_data={'cg.logx': ['logging.yaml']},
+        package_data={'coge.logx': ['logging.yaml']},
         install_requires=open('requirements.txt', 'r').read().strip().split(),
         entry_points={
             'console_scripts': [
-                'coge = cg:entry_point'
+                'coge = coge:entry_point'
             ]
         },
         classifiers=[
