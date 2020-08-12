@@ -164,30 +164,35 @@ def listTarget(root,depth):
         if  cdepth < depth:
             print("     "*(cdepth-1) , basename(dname))
 
+
+
+def get_root():
+    env_root = os.environ.get("COGE_TMPLS") or os.environ.get("CG_TMPLS")
+    root  = env_root or os.path.expanduser("~/.config/.code_template")
+    return env_root,root
+
 def entry_point():
     parser = createParse()
     mainArgs=parser.parse_args()
-    env_root = os.environ.get("COGE_TMPLS") or os.environ.get("CG_TMPLS")
-    fallbackdir= os.path.expanduser("~/.config/.code_template")
+    env_root,root = get_root()
     if env_root is None:
+        fallbackdir= os.path.expanduser("~/.config/.code_template")
+        Path(fallbackdir).mkdir(parents=True, exist_ok=True)
         logger.warning(f"env COGE_TMPLS is not definded! use default tmplts location: {fallbackdir}")
-
     
-    Path(fallbackdir).mkdir(parents=True, exist_ok=True)
-    root  = env_root or "~/.config/.code_template"
-
     if mainArgs.link_tplt:
         link()
     else:
         main(root,mainArgs)
 
 def link():
-    tmpl_location  = os.environ.get("COGE_TMPLS") or os.environ.get("CG_TMPLS")
-    subprocess.check_output(f"ln  -s $PWD {tmpl_location}", shell=True)
+    env_root,root = get_root()
+    subprocess.check_output(f"ln  -s $PWD {root}", shell=True)
 
 def createParse():
     parser = argparse.ArgumentParser( formatter_class=argparse.ArgumentDefaultsHelpFormatter, description="""
-        
+      make template link : cd x-engine-module-template && coge -r
+            use template : coge x-engine-module-template xxxx:camera @:x-engine-module-camera  
     """)
 
     parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: COGE_ARG__', default="COGE_ARG__")  
