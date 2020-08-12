@@ -30,7 +30,7 @@ def copying(src,dest):
     try:
         gitfiles = gitLsFiles(src)
         if not isGitFolderClean(src):
-            print(f"{src} is not clean, commit your changes or git reset.")
+            logger.critical(f"{src} is not clean, commit your changes or git reset.")
             sys.exit(0);
 
         for f in gitfiles:
@@ -50,7 +50,7 @@ def copying(src,dest):
             if isbreak:
                 continue
             shutil.copy(join(src,f), join(dest,f))
-            print("cg -->",join(dest,f))
+            logger.info("cg --> "+join(dest,f))
     except Exception as e:
         logger.exception(e)
         copy_tree(src, dest)
@@ -92,7 +92,6 @@ def fullReplace(root,oldKey,newKey):
             if isfile(oldfile):
                 if oldKey in filename:
                     newfile = join(dname,filename.replace(oldKey,newKey))
-                    # print(oldfile,newfile)
                     os.rename(oldfile,newfile)
 
         # rename folder 
@@ -103,7 +102,6 @@ def fullReplace(root,oldKey,newKey):
 def main(root,args):
     keypais={}
     prefix = args.arg_prefix or "CG_ARG__"
-    # print(args.magic)
 
     idx = 0
 
@@ -135,7 +133,7 @@ def main(root,args):
     cwd = os.getcwd()
     dest = join(cwd,target_foldername)
     if os.path.isdir(dest):
-        print(f"{dest} exists. rm it first!")
+        logger.critical(f"{dest} exists. rm it first!")
         return 
     copying(root,dest)
 
