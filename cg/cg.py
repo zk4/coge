@@ -21,20 +21,24 @@ def gitLsFiles(src):
     return list_of_files
 
 def copying(src,dest):
-    # copy_tree(src, dest)
-    for f in gitLsFiles(src):
-        f = f.decode('utf8')
-        dest_fpath = join(dest,f)
-        os.makedirs(os.path.dirname(dest_fpath), exist_ok=True)
-        isbreak= False
-        for ci in common_ignore:
-            print(type(f),f,"-->",type(ci),ci)
-            if f.endswith(ci):
-                isbreak = True
-                break
-        if isbreak:
-            continue
-        shutil.copy(join(src,f), join(dest,f))
+    try:
+        gitfiles = gitLsFiles(src)
+        for f in gitLsFiles:
+            f = f.decode('utf8')
+            dest_fpath = join(dest,f)
+            os.makedirs(os.path.dirname(dest_fpath), exist_ok=True)
+            isbreak= False
+            for ci in common_ignore:
+                print(type(f),f,"-->",type(ci),ci)
+                if f.endswith(ci):
+                    isbreak = True
+                    break
+            if isbreak:
+                continue
+            shutil.copy(join(src,f), join(dest,f))
+    except Exception as e:
+        print(f"can't find .git, copy all {dest}")
+        copy_tree(src, dest)
 
 
 def fullReplace(root,oldKey,newKey):
@@ -124,7 +128,7 @@ def listTarget(root,depth):
 
     for dname,dirs,files in os.walk(stuff):
         cdepth = dname[len(stuff):].count(os.sep)
-        if basename(dname).startswith("."):
+        if basename(dname).startswith(".") or ".git" in dname:
             continue
         if  cdepth < depth:
             print("     "*(cdepth-1) , basename(dname))
