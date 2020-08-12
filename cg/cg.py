@@ -26,13 +26,11 @@ def copying(src,dest):
         f = f.decode('utf8')
         dest_fpath = join(dest,f)
         os.makedirs(os.path.dirname(dest_fpath), exist_ok=True)
-        print("===",join(src,f), dest_fpath)
         isbreak= False
         for ci in common_ignore:
             print(type(f),f,"-->",type(ci),ci)
             if f.endswith(ci):
                 isbreak = True
-                print("pass",dest_fpath)
                 break
         if isbreak:
             continue
@@ -110,6 +108,10 @@ def main(root,args):
         
     print(root,keypais)
 
+    if args.list:
+        listTarget(root,args.depth)
+        return 
+
     cwd = os.getcwd()
     dest = join(cwd,target_foldername)
     copying(root,dest)
@@ -120,10 +122,10 @@ def main(root,args):
 def listTarget(root,depth):
     stuff = os.path.abspath(os.path.expanduser(os.path.expandvars(root)))
 
-    for root,dirs,files in os.walk(stuff):
-        if root[len(stuff):].count(os.sep) < depth:
-            # for f in files:
-            print(os.path.join(root))
+    for dname,dirs,files in os.walk(stuff):
+        cdepth = dname[len(stuff):].count(os.sep)
+        if  cdepth < depth:
+            print("     "*(cdepth-1) , basename(dname))
 
 def entry_point():
     parser = createParse()
@@ -135,8 +137,6 @@ def entry_point():
 
     if mainArgs.link_tplt:
         link()
-    elif mainArgs.list:
-        listTarget(root,mainArgs.depth)
     else:
         main(root,mainArgs)
 
