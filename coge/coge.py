@@ -56,7 +56,7 @@ def copying(allow_git_dirty, src,dest):
             shutil.copy(join(src,f), join(dest,f))
             logger.info("coge --> "+join(dest,f))
     except Exception as e:
-        logger.exception(e)
+        # logger.exception(e)
         copy_tree(src, dest)
     print("copying done -----------------------------------")
 
