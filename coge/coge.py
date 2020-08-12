@@ -15,9 +15,20 @@ import shutil
 
 common_ignore=[".DS_Store",'.pyc',".o",".obj",".class","Pods"]
 
+def isGitFolder(src):
+    try:
+        subprocess.check_output(f"cd {src}  && git status ", shell=True).splitlines()
+    except Exception as e:
+        return False
+    return True
+
 # this command will respect .gitignore
 def isGitFolderClean(src):
-    list_of_files = subprocess.check_output(f"cd {src}  && git status -s", shell=True).splitlines()
+    list_of_files =[]
+    try:
+        list_of_files = subprocess.check_output(f"cd {src}  && git status -s", shell=True).splitlines()
+    except Exception as e:
+        pass
     return len(list_of_files) == 0
 
 def gitLsFiles(src):
@@ -27,11 +38,12 @@ def gitLsFiles(src):
     return list_of_files
 
 def copying(allow_git_dirty, src,dest):
-    try:
-        gitfiles = gitLsFiles(src)
+    if isGitFolder(src):
         if not allow_git_dirty and not isGitFolderClean(src):
             logger.critical(f"{src} is not clean, commit your changes or git reset. or use -w to ignore this check")
             sys.exit(0);
+
+        gitfiles = gitLsFiles(src)
 
         logger.info(f'{src} is git repo')
 
@@ -55,8 +67,8 @@ def copying(allow_git_dirty, src,dest):
                 continue
             shutil.copy(join(src,f), join(dest,f))
             logger.info("coge --> "+join(dest,f))
-    except Exception as e:
-        # logger.exception(e)
+    else:
+        logger.critical("Not a git repo,full copy!")
         copy_tree(src, dest)
     print("copying done -----------------------------------")
 
