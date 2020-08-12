@@ -117,7 +117,7 @@ def fullReplace(root,oldKey,newKey):
 
 def main(root,args):
     keypais={}
-    prefix = args.arg_prefix or "CG_ARG__"
+    prefix = args.arg_prefix or "COGE_ARG__"
 
     idx = 0
 
@@ -170,9 +170,9 @@ def listTarget(root,depth):
 def entry_point():
     parser = createParse()
     mainArgs=parser.parse_args()
-    root  = os.environ.get("CG_TMPLS")
+    root  = os.environ.get("COGE_TMPLS") or os.environ.get("CG_TMPLS")
     if root is None:
-        print("env CG_TMPLS is not definded!")
+        print("env COGE_TMPLS is not definded!")
         return
 
     if mainArgs.link_tplt:
@@ -181,15 +181,17 @@ def entry_point():
         main(root,mainArgs)
 
 def link():
-    subprocess.check_output("ln  -s $PWD $CG_TMPLS", shell=True)
+    tmpl_location  = os.environ.get("COGE_TMPLS") or os.environ.get("CG_TMPLS")
+    subprocess.check_output(f"ln  -s $PWD {tmpl_location}", shell=True)
 
 def createParse():
     parser = argparse.ArgumentParser( formatter_class=argparse.ArgumentDefaultsHelpFormatter, description="")
 
 
-    parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: CG_ARG__', default="CG_ARG__")  
+    parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: COGE_ARG__', default="COGE_ARG__")  
     parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,) 
-    parser.add_argument('-r', '--link_tplt', help='link cwd template to CG_TMPLS', default=False, action='store_true' ) 
+    parser.add_argument('-r', '--link_tplt', help='link cwd template to COGE_TMPLS', default=False, action='store_true' ) 
+    parser.add_argument('-i', '--init', help='init your CG_TMPLS location to ~/.config/.code_template', default=False, action='store_true' ) 
     parser.add_argument('-w', '--allow_git_dirty', help='by default, your CG_TMPLS must git clean, because coge relies on git command if you are in a git repo', default=False, action='store_true' ) 
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  
 
