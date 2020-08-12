@@ -108,7 +108,7 @@ def main(root,args):
         
     print(root,keypais)
 
-    if args.list:
+    if args.list or len(args.magic)==0:
         listTarget(root,args.depth)
         return 
 
