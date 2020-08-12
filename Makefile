@@ -38,7 +38,8 @@ main:
 
 run:
 	#python3 -m cg eat -k b
-	python3 -m cg python bestpractice bestpractice:cog @:cog
+	#python3 -m cg python bestpractice bestpractice:cog @:cog
+	python3 -m cg x-engine-module-template @:x-engine-module-blue
 
 wrun:
 	watchexec -ce py 'python3 -m cg eat -c 2'

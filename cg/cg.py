@@ -13,32 +13,39 @@ from distutils.dir_util import copy_tree
 import subprocess
 import shutil
 
-common_ignore=[".DS_Store",'.pyc',".o",".obj",".class"]
+common_ignore=[".DS_Store",'.pyc',".o",".obj",".class","Pods"]
 
 # this command will respect .gitignore
 def gitLsFiles(src):
+    # print("src",f"cd {src}  && git ls-files")
     list_of_files = subprocess.check_output(f"cd {src}  && git ls-files", shell=True).splitlines()
     return list_of_files
 
 def copying(src,dest):
     try:
         gitfiles = gitLsFiles(src)
-        for f in gitLsFiles:
-            f = f.decode('utf8')
+        for f in gitfiles:
+            try:
+                f = f.decode('utf8')
+            except Exception as ee:
+                logger.exception(ee)
+                continue
+
             dest_fpath = join(dest,f)
             os.makedirs(os.path.dirname(dest_fpath), exist_ok=True)
             isbreak= False
             for ci in common_ignore:
-                print(type(f),f,"-->",type(ci),ci)
                 if f.endswith(ci):
                     isbreak = True
                     break
             if isbreak:
                 continue
             shutil.copy(join(src,f), join(dest,f))
+            print("cg -->",join(dest,f))
     except Exception as e:
-        print(f"can't find .git, copy all {dest}")
+        logger.exception(e)
         copy_tree(src, dest)
+    print("copying done -----------------------------------")
 
 
 def fullReplace(root,oldKey,newKey):
@@ -64,7 +71,7 @@ def fullReplace(root,oldKey,newKey):
             try:
                 contents = str(Path(oldfile).read_text())
             except Exception as e:
-                print("error: pass", e)
+                print(f"{oldfile} error: pass", e)
                 continue
 
 
@@ -87,7 +94,7 @@ def fullReplace(root,oldKey,newKey):
 def main(root,args):
     keypais={}
     prefix = args.arg_prefix or "CG_ARG__"
-    print(args.magic)
+    # print(args.magic)
 
     idx = 0
 
@@ -118,6 +125,9 @@ def main(root,args):
 
     cwd = os.getcwd()
     dest = join(cwd,target_foldername)
+    if os.path.isdir(dest):
+        print(f"{dest} exists. rm it first!")
+        return 
     copying(root,dest)
 
     for key, val in keypais.items(): 
