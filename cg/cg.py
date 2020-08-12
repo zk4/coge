@@ -124,6 +124,8 @@ def listTarget(root,depth):
 
     for dname,dirs,files in os.walk(stuff):
         cdepth = dname[len(stuff):].count(os.sep)
+        if basename(dname).startswith("."):
+            continue
         if  cdepth < depth:
             print("     "*(cdepth-1) , basename(dname))
 
