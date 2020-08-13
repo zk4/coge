@@ -32,9 +32,11 @@ def isGitFolderClean(src):
     return len(list_of_files) == 0
 
 def gitLsFiles(src):
-
-    before_script=join(src,".coge.before.py")
-    subprocess.Popen(["python3",before_script]).communicate()
+    before_script=join(src,".coge.before.copy.py")
+    if os.path.isfile(before_script):
+        logger.warning(f'----------------coge.before.copy.py----------------------')
+        subprocess.Popen(["python3",before_script]).communicate()
+        logger.warning(f'---------------------------------------------------------')
 
     # todo  you need to commit your files first
     # print("src",f"cd {src}  && git ls-files")
