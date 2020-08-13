@@ -12,6 +12,7 @@ Compare to hygen, yo.
 2. [x] instinct command follows the folder path.
 4. [x] quick project to template and vice versa.
 3. [x] respect .gitignore.
+3. [ ] support github.com repo.
 4. auto complete in command line.
 5. prompt available.
 

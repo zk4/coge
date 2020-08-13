@@ -65,8 +65,14 @@ def copying(allow_git_dirty, src,dest):
                     break
             if isbreak:
                 continue
-            shutil.copy(join(src,f), join(dest,f))
-            logger.info("coge --> "+join(dest,f))
+            
+
+            try:
+                shutil.copy(join(src,f), join(dest,f))
+                logger.info("coge --> "+join(dest,f))
+            except Exception as e:
+                logger.error("coge --> "+join(dest,f))
+                pass
     else:
         logger.critical("Not a git repo,full copy!")
         copy_tree(src, dest)
@@ -139,6 +145,10 @@ def main(root,args):
                 idx+=1
             keypais[key] = val
 
+    if args.cmd or len(args.magic)==0:
+        listCmd(root,args.depth)
+        return 
+
     if args.list or len(args.magic)==0:
         listTarget(root,args.depth)
         return 
@@ -163,6 +173,17 @@ def listTarget(root,depth):
             continue
         if  cdepth < depth:
             print("     "*(cdepth-1) , basename(dname))
+
+def listCmd(root,depth):
+    stuff = os.path.abspath(os.path.expanduser(os.path.expandvars(root)))
+    
+    for dname,dirs,files in os.walk(stuff, followlinks=True):
+        cdepth = dname[len(stuff):].count(os.sep)
+        if basename(dname).startswith(".") or ".git" in dname or "__pycache__" in dname:
+            continue
+        if  cdepth < depth:
+            print("coge",dname.replace(root,"").replace("/"," "),"@:app")
+        olddepth = cdepth 
 
 
 
@@ -198,6 +219,7 @@ def createParse():
 
     parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: COGE_ARG__', default="COGE_ARG__")  
     parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,) 
+    parser.add_argument('-c', '--cmd', help='cmd', default=False, action='store_true' ,) 
     parser.add_argument('-r', '--link_tplt', help='link `cwd` to $COGE_TMPLS', default=False, action='store_true' ) 
     # parser.add_argument('-i', '--init', help='init your COGE_TMPLS location to ~/.config/.code_template', default=False, action='store_true' ) 
     parser.add_argument('-w', '--allow_git_dirty', help='alllow git dirty', default=False, action='store_true' ) 

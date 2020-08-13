@@ -39,7 +39,9 @@ main:
 run:
 	#python3 -m coge eat -k b
 	#python3 -m coge python bestpractice bestpractice:cog @:cog
-	python3 -m coge x-engine-module-template @:x-engine-module-blue
+	#python3 -m coge x-engine-module-template @:x-engine-module-blue
+	@python3 -m coge c opengl @:app  -w 
+
 
 wrun:
 	watchexec -ce py 'python3 -m coge eat -c 2'
