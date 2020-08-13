@@ -43,26 +43,36 @@ What coge does:
 - Just copy $COGE_TMPLS/js/react to $PWD/app
 
 
+# work with fzf
+``` 
+cg () {
+	eval `coge -c $@ | fzf --preview= --bind 'enter:execute-silent(pbcopy <<< {})+abort' ` && pbpaste
+}
+```
+call cg from terminal. and paste it.
 
 
 # help
 ```
-usage: coge [-h] [-a ARG_PREFIX] [-l] [-r] [-w] [-d DEPTH] [o [o ...]]
+usage: coge [-h] [-a ARG_PREFIX] [-l] [-c] [-r] [-w] [-d DEPTH]
+            [magic [magic ...]]
+
+      make template link : cd x-engine-module-template && coge -r 
+            use template : coge x-engine-module-template xxxx:camera @:x-engine-module-camera  
+    
 
 positional arguments:
-  o                     folder or newkey:oldkey (default: None)
+  magic                 folder or newkey:oldkey
 
 optional arguments:
   -h, --help            show this help message and exit
   -a ARG_PREFIX, --arg_prefix ARG_PREFIX
-                        ex: CG_ARG__ (default: COGE_ARG__)
-  -l, --list            list folders (default: False)
-  -r, --link_tplt       link cwd template to COGE_TMPLS (default: False)
+                        ex: COGE_ARG__
+  -l, --list            list folders
+  -c, --cmd             cmd
+  -r, --link_tplt       link `cwd` to $COGE_TMPLS
   -w, --allow_git_dirty
-                        by default, your COGE_TMPLS must git clean, because coge
-                        relies on git command if you are in a git repo
-                        (default: False)
+                        alllow git dirty
   -d DEPTH, --depth DEPTH
-                        list depth (default: 3)
-
+                        list depth
 ``` 
