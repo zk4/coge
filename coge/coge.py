@@ -32,6 +32,10 @@ def isGitFolderClean(src):
     return len(list_of_files) == 0
 
 def gitLsFiles(src):
+
+    before_script=join(src,".coge.before.py")
+    subprocess.Popen(["python3",before_script]).communicate()
+
     # todo  you need to commit your files first
     # print("src",f"cd {src}  && git ls-files")
     list_of_files = subprocess.check_output(f"cd {src}  && git ls-files", shell=True).splitlines()

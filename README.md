@@ -1,7 +1,7 @@
 # coge
 
 Simple yet powerful code generator.
-Make use of your shell as possiable as coge can.
+Make use of existing tool as possiable as we can.
 
 Compare to hygen, yo.
 - yo is way too slow and complicated.
@@ -9,12 +9,11 @@ Compare to hygen, yo.
 
 **What I only need:**
 1. [x] template is runable as normal prj. No more \$placehold\$ stuff.
-2. [x] instinct command follows the folder path.
+2. [x] instinct command with the power of fzf.
 4. [x] quick project to template and vice versa.
 3. [x] respect .gitignore.
 3. [ ] support github.com repo.
-4. auto complete in command line.
-5. prompt available.
+5. write plugin in any language only if you can run it in shell.
 
 # install
 ```
