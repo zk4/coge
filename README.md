@@ -13,7 +13,7 @@ Compare to hygen, yo.
 4. [x] quick project to template and vice versa.
 3. [x] respect .gitignore.
 3. [ ] support github.com repo.
-5. write plugin in any language only if you can run it in shell.
+5. plugin in any language only if you can run it in shell.
 
 # install
 ```

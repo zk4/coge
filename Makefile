@@ -40,7 +40,7 @@ run:
 	#python3 -m coge eat -k b
 	#python3 -m coge python bestpractice bestpractice:cog @:cog
 	#python3 -m coge x-engine-module-template @:x-engine-module-blue
-	@python3 -m coge c opengl @:app  -w 
+	@python3 -m coge -r
 
 
 wrun:
@@ -53,12 +53,12 @@ pure-all: env-rm rm env install test run
 
 
 	
-upload-to-test: rm freeze
+upload-to-test: rm
 	python3 setup.py bdist_wheel --universal
 	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 
-upload-to-prod: rm freeze
+upload-to-prod: rm
 	python3 setup.py bdist_wheel --universal
 	twine upload dist/*
 
