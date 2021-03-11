@@ -33,9 +33,6 @@ def isGitFolderClean(src):
 
 def gitLsFiles(src):
     before_script=join(src,".coge.before.copy.py")
-
-    # todo  you need to commit your files first
-    # print("src",f"cd {src}  && git ls-files")
     list_of_files = subprocess.check_output(f"cd {src}  && git ls-files", shell=True).splitlines()
     return list_of_files
 
@@ -50,6 +47,19 @@ def before_copy(src,dest):
     if os.path.isfile(before_sh_script):
         logger.warning(f'----------------coge.before.copy.sh----------------------')
         subprocess.Popen(["bash" ,before_sh_script],cwd=dest).communicate()
+        logger.warning(f'---------------------------------------------------------')
+
+def after_copy(src,dest):
+    after_py_script=join(src,".coge.after.copy.py")
+    if os.path.isfile(after_py_script):
+        logger.warning(f'----------------coge.after.copy.py----------------------')
+        subprocess.Popen(["python3",after_py_script],cwd=dest).communicate()
+        logger.warning(f'---------------------------------------------------------')
+
+    after_sh_script=join(src,".coge.after.copy.sh")
+    if os.path.isfile(after_sh_script):
+        logger.warning(f'----------------coge.after.copy.sh----------------------')
+        subprocess.Popen(["bash" ,after_sh_script],cwd=dest).communicate()
         logger.warning(f'---------------------------------------------------------')
 
 def copying(allow_git_dirty, src,dest):
@@ -183,18 +193,6 @@ def main(root,args):
 
     after_copy(root,dest)
 
-def after_copy(src,dest):
-    after_py_script=join(src,".coge.after.copy.py")
-    if os.path.isfile(after_py_script):
-        logger.warning(f'----------------coge.after.copy.py----------------------')
-        subprocess.Popen(["python3",after_py_script],cwd=dest).communicate()
-        logger.warning(f'---------------------------------------------------------')
-
-    after_sh_script=join(src,".coge.after.copy.sh")
-    if os.path.isfile(after_sh_script):
-        logger.warning(f'----------------coge.after.copy.sh----------------------')
-        subprocess.Popen(["bash" ,after_sh_script],cwd=dest).communicate()
-        logger.warning(f'---------------------------------------------------------')
 
 
 def listTarget(root,depth):
