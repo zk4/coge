@@ -1,0 +1,22 @@
+{
+  "name": "commit_demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/semver": "^7.3.4",
+    "chalk": "^4.1.0",
+    "conventional-changelog-cli": "^2.1.1",
+    "lint-staged": "^10.5.3",
+    "semver": "^7.3.4",
+    "yorkie": "^2.0.0"
+  },
+  "author": "zk",
+  "license": "ISC",
+  "gitHooks": {
+    "commit-msg": "node scripts/verifyCommit.js"
+  }
+}
