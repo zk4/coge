@@ -33,21 +33,32 @@ def isGitFolderClean(src):
 
 def gitLsFiles(src):
     before_script=join(src,".coge.before.copy.py")
-    if os.path.isfile(before_script):
-        logger.warning(f'----------------coge.before.copy.py----------------------')
-        subprocess.Popen(["python3",before_script]).communicate()
-        logger.warning(f'---------------------------------------------------------')
 
     # todo  you need to commit your files first
     # print("src",f"cd {src}  && git ls-files")
     list_of_files = subprocess.check_output(f"cd {src}  && git ls-files", shell=True).splitlines()
     return list_of_files
 
+def before_copy(src,dest):
+    before_py_script=join(src,".coge.before.copy.py")
+    if os.path.isfile(before_py_script):
+        logger.warning(f'----------------coge.before.copy.py----------------------')
+        subprocess.Popen(["python3",before_py_script],cwd=dest).communicate()
+        logger.warning(f'---------------------------------------------------------')
+
+    before_sh_script=join(src,".coge.before.copy.sh")
+    if os.path.isfile(before_sh_script):
+        logger.warning(f'----------------coge.before.copy.sh----------------------')
+        subprocess.Popen(["bash" ,before_sh_script],cwd=dest).communicate()
+        logger.warning(f'---------------------------------------------------------')
+
 def copying(allow_git_dirty, src,dest):
     if isGitFolder(src):
         if not allow_git_dirty and not isGitFolderClean(src):
             logger.critical(f"{src} is not clean, commit your changes or git reset. or use -w to ignore this check")
             sys.exit(0);
+
+        before_copy(src,dest)
 
         gitfiles = gitLsFiles(src)
 
@@ -169,6 +180,22 @@ def main(root,args):
 
     for key, val in keypais.items(): 
         fullReplace(dest,key,val)
+
+    after_copy(root,dest)
+
+def after_copy(src,dest):
+    after_py_script=join(src,".coge.after.copy.py")
+    if os.path.isfile(after_py_script):
+        logger.warning(f'----------------coge.after.copy.py----------------------')
+        subprocess.Popen(["python3",after_py_script],cwd=dest).communicate()
+        logger.warning(f'---------------------------------------------------------')
+
+    after_sh_script=join(src,".coge.after.copy.sh")
+    if os.path.isfile(after_sh_script):
+        logger.warning(f'----------------coge.after.copy.sh----------------------')
+        subprocess.Popen(["bash" ,after_sh_script],cwd=dest).communicate()
+        logger.warning(f'---------------------------------------------------------')
+
 
 def listTarget(root,depth):
     stuff = os.path.abspath(os.path.expanduser(os.path.expandvars(root)))
