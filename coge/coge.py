@@ -109,7 +109,8 @@ def fullReplace(root,oldKey,newKey):
     if oldKey == newKey or len(newKey)==0:
         return
 
-    for dname, dirs, files in os.walk(root,topdown=False):
+    for dname, dirs, files in os.walk(root,topdown=True):
+        dirs[:] = [d for d in dirs if not d == '.git']
         for filename in files:
 
             # this is evil file from MAC
@@ -186,14 +187,29 @@ def main(root,args):
         return 
     allow_git_dirty = args.allow_git_dirty
 
-    before_copy(root,dest)
+    tempalte_name = args.magic[0]
+    is_from_net=tempalte_name.startswith("http://") or tempalte_name.startswith("https://") or tempalte_name.startswith("file://")
 
-    copying(allow_git_dirty,root,dest)
+
+    if is_from_net and args.script_from_net:
+        logger.critical(f"template is from net! Script will run cause you use -s option! BE CAUTION!")
+    if not is_from_net or args.script_from_net:
+        before_copy(root,dest)
+    else:
+        logger.warn(f'before script will not run')
+
+    if is_from_net:
+        subprocess.Popen(["proxychains4","git","clone","--depth=1",tempalte_name,dest]).communicate()
+    else:
+        copying(allow_git_dirty,root,dest)
 
     for key, val in keypais.items(): 
         fullReplace(dest,key,val)
 
-    after_copy(root,dest)
+    if not is_from_net or args.script_from_net:
+        after_copy(root,dest)
+    else:
+        logger.warn(f'after script will not run')
 
 
 
@@ -201,6 +217,7 @@ def listTarget(root,depth):
     stuff = os.path.abspath(os.path.expanduser(os.path.expandvars(root)))
 
     for dname,dirs,files in os.walk(stuff, followlinks=True):
+        dirs[:] = [d for d in dirs if not d == '.git']
         cdepth = dname[len(stuff):].count(os.sep)
         if basename(dname).startswith(".") or ".git" in dname or "__pycache__" in dname:
             continue
@@ -211,6 +228,7 @@ def listCmd(root,depth):
     stuff = os.path.abspath(os.path.expanduser(os.path.expandvars(root)))
     
     for dname,dirs,files in os.walk(stuff, followlinks=True):
+        dirs[:] = [d for d in dirs if not d == '.git']
         cdepth = dname[len(stuff):].count(os.sep)
         if basename(dname).startswith(".") or ".git" in dname or "__pycache__" in dname:
             continue
@@ -254,8 +272,8 @@ def createParse():
     parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,) 
     parser.add_argument('-c', '--cmd', help='cmd', default=False, action='store_true' ,) 
     parser.add_argument('-r', '--link_tplt', help='link `cwd` to $COGE_TMPLS', default=False, action='store_true' ) 
-    # parser.add_argument('-i', '--init', help='init your COGE_TMPLS location to ~/.config/.code_template', default=False, action='store_true' ) 
     parser.add_argument('-w', '--allow_git_dirty', help='alllow git dirty', default=False, action='store_true' ) 
+    parser.add_argument('-s', '--script_from_net', help='alllow script from net', default=False, action='store_true' ) 
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  
     parser.add_argument('magic', metavar="magic", type=str, nargs='*', 
             help='folder or newkey:oldkey')

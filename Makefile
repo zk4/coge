@@ -37,10 +37,7 @@ main:
 	python3 main.py eat -c 2
 
 run:
-	#python3 -m coge eat -k b
-	#python3 -m coge python bestpractice bestpractice:cog @:cog
-	#python3 -m coge x-engine-module-template @:x-engine-module-blue
-	@python3 -m coge -r
+	@python3 -m coge https://www.github.com/zk4/coge coge:good  @:testme -s
 
 
 wrun:

@@ -81,8 +81,9 @@ git flow init
 usage: coge [-h] [-a ARG_PREFIX] [-l] [-c] [-r] [-w] [-d DEPTH]
             [magic [magic ...]]
 
-      make template link : cd x-engine-module-template && coge -r 
-            use template : coge x-engine-module-template xxxx:camera @:x-engine-module-camera  
+       make template link : cd x-engine-module-template && coge -r 
+             use template : coge x-engine-module-template xxxx:camera @:x-engine-module-camera  
+use git template from net : coge https://www.github.com/zk4/x-engine-module-template xxxx:camera @:x-engine-module-camera  
     
 
 positional arguments:
