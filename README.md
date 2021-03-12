@@ -32,7 +32,7 @@ coge js react oldkey:newkey :newkey0 :newkey1 @:destname
 What coge does:
 
 - copy $COGE_TMPLS/js/react to $PWD/destname
-- change all names from oldkey to newkey,  from  COGE_ARG__0 to newkey0 ,from  COGE_ARG__1 to newkey1
+- change all names from oldkey to newkey,  from  COGE_ARG_0 to newkey0 ,from  COGE_ARG_1 to newkey1
 
 ## 2
 ``` bash
@@ -66,7 +66,7 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -a ARG_PREFIX, --arg_prefix ARG_PREFIX
-                        ex: COGE_ARG__
+                        ex: COGE_ARG_
   -l, --list            list folders
   -c, --cmd             cmd
   -r, --link_tplt       link `cwd` to $COGE_TMPLS

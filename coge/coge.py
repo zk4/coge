@@ -149,7 +149,7 @@ def fullReplace(root,oldKey,newKey):
 
 def main(root,args):
     keypais={}
-    prefix = args.arg_prefix or "COGE_ARG__"
+    prefix = args.arg_prefix or "COGE_ARG_"
 
     idx = 0
 
@@ -248,7 +248,7 @@ def createParse():
             use template : coge x-engine-module-template xxxx:camera @:x-engine-module-camera  
     """)
 
-    parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: COGE_ARG__', default="COGE_ARG__")  
+    parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: COGE_ARG_', default="COGE_ARG_")  
     parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,) 
     parser.add_argument('-c', '--cmd', help='cmd', default=False, action='store_true' ,) 
     parser.add_argument('-r', '--link_tplt', help='link `cwd` to $COGE_TMPLS', default=False, action='store_true' ) 
