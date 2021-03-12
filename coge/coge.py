@@ -199,7 +199,7 @@ def main(root,args):
         logger.warn(f'before script will not run')
 
     if is_from_net:
-        subprocess.Popen(["proxychains4","git","clone","--depth=1",tempalte_name,dest]).communicate()
+        subprocess.Popen(["git","clone","--depth=1",tempalte_name,dest]).communicate()
     else:
         copying(allow_git_dirty,root,dest)
 
