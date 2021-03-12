@@ -51,6 +51,31 @@ cg () {
 call cg from terminal. and paste it.
 
 
+# timing script 
+you can put .coge.after.copy.sh in you template folder. 
+
+It will execute after copy, which is very handy.
+
+For Safety reason. Template from network would need to use -s option to enforcing script executing, only if you know the script is safe.
+
+Supported timing and language:
+```
+.coge.after.copy.sh
+.coge.before.copy.sh
+
+.coge.after.copy.py
+.coge.before.copy.py
+```
+
+Ex:
+.coge.after.copy.sh
+```
+#!/bin/bash
+git init 
+git flow init
+```
+
+
 # help
 ```
 usage: coge [-h] [-a ARG_PREFIX] [-l] [-c] [-r] [-w] [-d DEPTH]

@@ -68,7 +68,6 @@ def copying(allow_git_dirty, src,dest):
             logger.critical(f"{src} is not clean, commit your changes or git reset. or use -w to ignore this check")
             sys.exit(0);
 
-        before_copy(src,dest)
 
         gitfiles = gitLsFiles(src)
 
@@ -186,6 +185,9 @@ def main(root,args):
         logger.critical(f"{dest} exists. rm it first!")
         return 
     allow_git_dirty = args.allow_git_dirty
+
+    before_copy(root,dest)
+
     copying(allow_git_dirty,root,dest)
 
     for key, val in keypais.items(): 
