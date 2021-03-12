@@ -1,4 +1,6 @@
-# coge
+![image-20210312135709581](https://raw.githubusercontent.com/zk4/image_backup/main/img/image-20210312135709581.png)
+
+
 
 Simple yet powerful code generator.
 Make use of existing tool as possiable as we can.
@@ -12,12 +14,12 @@ Compare to hygen, yo.
 2. [x] instinct command with the power of fzf.
 4. [x] quick project to template and vice versa.
 3. [x] respect .gitignore.
-3. [ ] support github.com repo.
+3. [x] support github.com repo.
 5. plugin in any language only if you can run it in shell.
 
 # install
 ```
-make install
+pip3 install coge
 ```
 
 # usage
@@ -102,4 +104,4 @@ optional arguments:
                         alllow script from net
   -d DEPTH, --depth DEPTH
                         list depth
-``` 
+```
