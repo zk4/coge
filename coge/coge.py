@@ -264,8 +264,9 @@ def link():
 
 def createParse():
     parser = argparse.ArgumentParser( formatter_class=argparse.RawTextHelpFormatter, description="""
-      make template link : cd x-engine-module-template && coge -r 
-            use template : coge x-engine-module-template xxxx:camera @:x-engine-module-camera  
+       make template link : cd x-engine-module-template && coge -r 
+             use template : coge x-engine-module-template xxxx:camera @:x-engine-module-camera  
+use git template from net : coge https://www.github.com/zk4/x-engine-module-template xxxx:camera @:x-engine-module-camera  
     """)
 
     parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: COGE_ARG_', default="COGE_ARG_")  
