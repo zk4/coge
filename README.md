@@ -1,4 +1,4 @@
-![image-20210312135709581](https://raw.githubusercontent.com/zk4/image_backup/main/img/image-20210312135709581.png)
+<img src="https://raw.githubusercontent.com/zk4/image_backup/main/img/image-20210312135709581.png" alt="image-20210312135709581" style="zoom:50%;" />
 
 
 
