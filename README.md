@@ -90,7 +90,7 @@ use git template from net : coge https://www.github.com/vitejs/vite \\bvite\\b:y
     
 
 positional arguments:
-  magic                 folder or newkey:oldkey
+  magic                  newkey:oldkey or @:folder_name
 
 optional arguments:
   -h, --help            show this help message and exit

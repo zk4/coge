@@ -278,5 +278,5 @@ use git template from net : coge https://www.github.com/vitejs/vite \\bvite\\b:y
     parser.add_argument('-s', '--script_from_net', help='alllow script from net', default=False, action='store_true' ) 
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  
     parser.add_argument('magic', metavar="magic", type=str, nargs='*', 
-            help='folder or newkey:oldkey')
+            help='newkey:oldkey or @:folder_name')
     return parser
