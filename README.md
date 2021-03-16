@@ -13,9 +13,10 @@ Compare to hygen, yo.
 1. [x] template is runable as normal prj. No more \$placehold\$ stuff.
 2. [x] instinct command with the power of fzf.
 4. [x] quick project to template and vice versa.
-3. [x] respect .gitignore.
-3. [x] support github.com repo.
-5. plugin in any language only if you can run it in shell.
+5. [x] respect .gitignore.
+6. [x] support github.com repo.
+7. [x] plugin in any language only if you can run it in shell.
+8. [x] support regrex replacement! see --help
 
 # install
 ```
@@ -85,7 +86,7 @@ usage: coge [-h] [-a ARG_PREFIX] [-l] [-c] [-r] [-w] [-s] [-d DEPTH]
 
        make template link : cd x-engine-module-template && coge -r 
              use template : coge x-engine-module-template xxxx:camera @:x-engine-module-camera  
-use git template from net : coge https://www.github.com/zk4/x-engine-module-template xxxx:camera @:x-engine-module-camera  
+use git template from net : coge https://www.github.com/vitejs/vite \\bvite\\b:your_vite @:your_vite  
     
 
 positional arguments:
