@@ -12,6 +12,7 @@ from pathlib import Path
 from distutils.dir_util import copy_tree
 import subprocess
 import shutil
+import re
 
 common_ignore=[".DS_Store",'.pyc',".o",".obj",".class","Pods"]
 
@@ -132,19 +133,19 @@ def fullReplace(root,oldKey,newKey):
                 print(f"{oldfile} error: pass", e)
                 continue
 
-            contents = contents.replace(oldKey,newKey)
+            contents = re.sub(oldKey,newKey,contents)
 
             with open(oldfile,"w") as f:
                 f.write(contents)
 
             if isfile(oldfile):
-                if oldKey in filename:
-                    newfile = join(dname,filename.replace(oldKey,newKey))
+                if re.match(oldKey,filename):
+                    newfile = join(dname,re.sub(oldKey,newKey,filename))
                     os.rename(oldfile,newfile)
 
         # rename folder 
-        if oldKey in basename(dname):
-            destfolder = join(Path(dname).parent,basename(dname).replace(oldKey,newKey))
+        if re.match(oldKey,basename(dname)):
+            destfolder = join(Path(dname).parent,re.sub(oldKey,newKey,basename(dname)))
             os.rename(dname,destfolder)
 
 def main(root,args):
@@ -233,7 +234,7 @@ def listCmd(root,depth):
         if basename(dname).startswith(".") or ".git" in dname or "__pycache__" in dname:
             continue
         if  cdepth < depth:
-            print("coge",dname.replace(root,"").replace("/"," "),"@:app")
+            print("coge",re.sub("/"," ",re.sub(root,"",dname)),"@:app")
         olddepth = cdepth 
 
 
@@ -266,7 +267,7 @@ def createParse():
     parser = argparse.ArgumentParser( formatter_class=argparse.RawTextHelpFormatter, description="""
        make template link : cd x-engine-module-template && coge -r 
              use template : coge x-engine-module-template xxxx:camera @:x-engine-module-camera  
-use git template from net : coge https://www.github.com/zk4/x-engine-module-template xxxx:camera @:x-engine-module-camera  
+use git template from net : coge https://www.github.com/vitejs/vite \\bvite\\b:your_vite @:your_vite  
     """)
 
     parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: COGE_ARG_', default="COGE_ARG_")  

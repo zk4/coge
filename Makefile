@@ -40,6 +40,9 @@ run:
 	@python3 -m coge https://www.github.com/zk4/coge coge:good  @:testme -s
 
 
+run:
+	@python3 -m coge https://github.com/vitejs/vite \\bvite\\b:viteme  @:viteme -s
+
 wrun:
 	watchexec -ce py 'python3 -m coge eat -c 2'
 
