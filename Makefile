@@ -39,6 +39,8 @@ main:
 run:
 	@python3 -m coge https://www.github.com/zk4/coge coge:good  @:testme -s
 
+localrun:
+	@python3 -m coge x-engine-module-template xxxx:testme @:x-engine-module-template2 -w
 
 wrun:
 	watchexec -ce py 'python3 -m coge eat -c 2'
