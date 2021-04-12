@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 from os.path import join, isfile,basename
 from pathlib import Path
 from distutils.dir_util import copy_tree
+import re
 import subprocess
 import shutil
 
@@ -105,11 +106,17 @@ def copying(allow_git_dirty, src,dest):
     print("copying done -----------------------------------")
 
 
+def replaceWithCase(content,before,after):
+    regex = re.compile(re.escape(before), re.I)
+    partial= regex.sub(lambda x: ''.join(d.upper() if c.isupper() else d.lower()
+        for c,d in zip(x.group()+after[len(x.group()):], after)), content)
+    return partial
+
 def fullReplace(root,oldKey,newKey):
     if oldKey == newKey or len(newKey)==0:
         return
 
-    for dname, dirs, files in os.walk(root,topdown=True):
+    for dname, dirs, files in os.walk(root,topdown=False):
         dirs[:] = [d for d in dirs if not d == '.git']
         for filename in files:
 
@@ -132,23 +139,23 @@ def fullReplace(root,oldKey,newKey):
                 print(f"{oldfile} error: pass", e)
                 continue
 
-            contents = contents.replace(oldKey,newKey)
+            contents = replaceWithCase(contents,oldKey,newKey)
 
             with open(oldfile,"w") as f:
                 f.write(contents)
 
             if isfile(oldfile):
-                if oldKey in filename:
-                    newfile = join(dname,filename.replace(oldKey,newKey))
+                if oldKey.upper() in filename.upper():
+                    newfile = join(dname,replaceWithCase(filename,oldKey,newKey))
                     os.rename(oldfile,newfile)
 
         # rename folder 
         if oldKey in basename(dname):
-            destfolder = join(Path(dname).parent,basename(dname).replace(oldKey,newKey))
+            destfolder = join(Path(dname).parent,replaceWithCase(basename(dname),oldKey,newKey))
             os.rename(dname,destfolder)
 
 def main(root,args):
-    keypais={}
+    keypairs={}
     prefix = args.arg_prefix or "COGE_ARG_"
 
     idx = 0
@@ -170,7 +177,7 @@ def main(root,args):
             if len(key.strip()) == 0:
                 key = prefix +str(idx)
                 idx+=1
-            keypais[key] = val
+            keypairs[key] = val
 
     if args.cmd or len(args.magic)==0:
         listCmd(root,args.depth)
@@ -203,7 +210,7 @@ def main(root,args):
     else:
         copying(allow_git_dirty,root,dest)
 
-    for key, val in keypais.items(): 
+    for key, val in keypairs.items(): 
         fullReplace(dest,key,val)
 
     if not is_from_net or args.script_from_net:

@@ -15,7 +15,7 @@ rm:
 	
 
 test: rm
-	pytest -s -v  tests/
+	watchexec -ce py 'pytest -s -v  tests/'
 
 coverage-html:
 	# --cov where you want to cover
@@ -40,7 +40,7 @@ run:
 	@python3 -m coge https://www.github.com/zk4/coge coge:good  @:testme -s
 
 localrun:
-	@python3 -m coge x-engine-module-template xxxx:testme @:x-engine-module-template2 -w
+	@python3 -m coge x-engine-native-template xxxx:testme @:x-engine-native-template2 -w
 
 wrun:
 	watchexec -ce py 'python3 -m coge eat -c 2'
