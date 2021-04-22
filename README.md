@@ -80,7 +80,7 @@ git flow init
 
 # help
 ```
-usage: coge [-h] [-a ARG_PREFIX] [-l] [-c] [-r] [-w] [-s] [-d DEPTH]
+usage: coge [-h] [-a ARG_PREFIX] [-l] [-c] [-r] [-w] [-s] [-d DEPTH] [-v]
             [magic [magic ...]]
 
        make template link : cd x-engine-module-template && coge -r 
@@ -104,4 +104,5 @@ optional arguments:
                         alllow script from net
   -d DEPTH, --depth DEPTH
                         list depth
+  -v, --version         version
 ```
