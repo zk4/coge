@@ -1,4 +1,4 @@
-
+.PHONY: version
 rm: 
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
@@ -39,6 +39,8 @@ main:
 run:
 	@python3 -m coge https://www.github.com/zk4/coge coge:good  @:testme -s
 
+version:
+	@python3 -m coge -v
 localrun:
 	@python3 -m coge x-engine-native-template xxxx:testme @:x-engine-native-template2 -w
 

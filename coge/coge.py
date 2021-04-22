@@ -254,6 +254,11 @@ def entry_point():
     parser = createParse()
     mainArgs=parser.parse_args()
     env_root,root = get_root()
+    if(mainArgs.version):
+        import pkg_resources  # part of setuptools
+        version = pkg_resources.require("coge")[0].version
+        print(version)
+        return 
     if env_root is None:
         fallbackdir= os.path.expanduser("~/.config/.code_template")
         Path(fallbackdir).mkdir(parents=True, exist_ok=True)
@@ -283,6 +288,7 @@ use git template from net : coge https://www.github.com/zk4/x-engine-module-temp
     parser.add_argument('-w', '--allow_git_dirty', help='alllow git dirty', default=False, action='store_true' ) 
     parser.add_argument('-s', '--script_from_net', help='alllow script from net', default=False, action='store_true' ) 
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  
+    parser.add_argument('-v', '--version', help='version', default=False, action='store_true' ) 
     parser.add_argument('magic', metavar="magic", type=str, nargs='*', 
             help='folder or newkey:oldkey')
     return parser
