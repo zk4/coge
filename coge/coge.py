@@ -150,7 +150,7 @@ def fullReplace(root,oldKey,newKey):
                     os.rename(oldfile,newfile)
 
         # rename folder 
-        if oldKey in basename(dname):
+        if oldKey.lower() in basename(dname).lower():
             destfolder = join(Path(dname).parent,replaceWithCase(basename(dname),oldKey,newKey))
             os.rename(dname,destfolder)
 
