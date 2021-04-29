@@ -16,6 +16,7 @@ Compare to hygen, yo.
 3. respect .gitignore.
 3. support github.com repo.
 5. plugin in any language only if you can run it in shell.
+7. respect Old keyword case. 
 
 # install
 ```

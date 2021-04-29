@@ -37,8 +37,8 @@ main:
 	python3 main.py eat -c 2
 
 run:
-	#@python3 -m coge https://www.github.com/zk4/coge coge:good  @:testme -s
-	@python3 -m coge toast toast:hello  @:hello -w
+	@python3 -m coge https://www.github.com/zk4/coge Makefile:MaKe  @:Make -s
+	#@python3 -m coge toast toast:hello  @:hello -w
 
 
 version:
