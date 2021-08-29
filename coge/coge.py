@@ -96,7 +96,7 @@ def copying(allow_git_dirty, src,dest):
             
 
             try:
-                shutil.copy(join(src,f), join(dest,f),follow_symlinks=True)
+                shutil.copy(join(src,f), join(dest,f),follow_symlinks=False)
                 logger.info("coge --> "+join(dest,f))
             except Exception as e:
                 logger.error("coge --> "+join(dest,f))
