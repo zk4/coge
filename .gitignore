@@ -1,0 +1,4 @@
+
+build/*
+coge.egg-info/*
+dist/*
