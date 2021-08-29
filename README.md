@@ -10,13 +10,13 @@ Compare to hygen, yo.
 - hygen pollutes all template files, and only support ejs.
 
 **What I only need:**
-1. [x] template is runable as normal prj. No more \$placehold\$ stuff.
-2. [x] instinct command with the power of fzf.
-4. [x] quick project to template and vice versa.
-5. [x] respect .gitignore.
-6. [x] support github.com repo.
-7. [x] plugin in any language only if you can run it in shell.
-8. [x] support regrex replacement! see --help
+1. template is runable as normal prj. No more \$placehold\$ stuff.
+2. instinct command with the power of fzf.
+4. quick project to template and vice versa.
+3. respect .gitignore.
+3. support github.com repo.
+5. plugin in any language only if you can run it in shell.
+7. respect Old keyword case. 
 
 # install
 ```
@@ -81,7 +81,7 @@ git flow init
 
 # help
 ```
-usage: coge [-h] [-a ARG_PREFIX] [-l] [-c] [-r] [-w] [-s] [-d DEPTH]
+usage: coge [-h] [-a ARG_PREFIX] [-l] [-c] [-r] [-w] [-s] [-d DEPTH] [-v]
             [magic [magic ...]]
 
        make template link : cd x-engine-module-template && coge -r 
@@ -105,4 +105,5 @@ optional arguments:
                         alllow script from net
   -d DEPTH, --depth DEPTH
                         list depth
+  -v, --version         version
 ```

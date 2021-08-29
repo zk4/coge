@@ -1,4 +1,4 @@
-
+.PHONY: version
 rm: 
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
@@ -15,7 +15,7 @@ rm:
 	
 
 test: rm
-	pytest -s -v  tests/
+	watchexec -ce py 'pytest -s -v  tests/'
 
 coverage-html:
 	# --cov where you want to cover
@@ -37,8 +37,14 @@ main:
 	python3 main.py eat -c 2
 
 run:
-	@python3 -m coge https://www.github.com/zk4/coge coge:good  @:testme -s
+	@python3 -m coge https://www.github.com/zk4/coge Makefile:MaKe  @:Make -s
+	#@python3 -m coge toast toast:hello  @:hello -w
 
+
+version:
+	@python3 -m coge -v
+localrun:
+	@python3 -m coge x-engine-native-template xxxx:testme @:x-engine-native-template2 -w
 
 run:
 	@python3 -m coge https://github.com/vitejs/vite \\bvite\\b:viteme  @:viteme -s

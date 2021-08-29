@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 from os.path import join, isfile,basename
 from pathlib import Path
 from distutils.dir_util import copy_tree
+import re
 import subprocess
 import shutil
 import re
@@ -106,11 +107,17 @@ def copying(allow_git_dirty, src,dest):
     print("copying done -----------------------------------")
 
 
+def replaceWithCase(content,before,after):
+    regex = re.compile(re.escape(before), re.I)
+    partial= regex.sub(lambda x: ''.join(d.upper() if c.isupper() else d.lower()
+        for c,d in zip(x.group()+after[len(x.group()):], after)), content)
+    return partial
+
 def fullReplace(root,oldKey,newKey):
     if oldKey == newKey or len(newKey)==0:
         return
 
-    for dname, dirs, files in os.walk(root,topdown=True):
+    for dname, dirs, files in os.walk(root,topdown=False):
         dirs[:] = [d for d in dirs if not d == '.git']
         for filename in files:
 
@@ -133,23 +140,23 @@ def fullReplace(root,oldKey,newKey):
                 print(f"{oldfile} error: pass", e)
                 continue
 
-            contents = re.sub(oldKey,newKey,contents)
+            contents = replaceWithCase(contents,oldKey,newKey)
 
             with open(oldfile,"w") as f:
                 f.write(contents)
 
             if isfile(oldfile):
-                if re.match(oldKey,filename):
-                    newfile = join(dname,re.sub(oldKey,newKey,filename))
+                if oldKey.upper() in filename.upper():
+                    newfile = join(dname,replaceWithCase(filename,oldKey,newKey))
                     os.rename(oldfile,newfile)
 
         # rename folder 
-        if re.match(oldKey,basename(dname)):
-            destfolder = join(Path(dname).parent,re.sub(oldKey,newKey,basename(dname)))
+        if oldKey.lower() in basename(dname).lower():
+            destfolder = join(Path(dname).parent,replaceWithCase(basename(dname),oldKey,newKey))
             os.rename(dname,destfolder)
 
 def main(root,args):
-    keypais={}
+    keypairs={}
     prefix = args.arg_prefix or "COGE_ARG_"
 
     idx = 0
@@ -171,7 +178,7 @@ def main(root,args):
             if len(key.strip()) == 0:
                 key = prefix +str(idx)
                 idx+=1
-            keypais[key] = val
+            keypairs[key] = val
 
     if args.cmd or len(args.magic)==0:
         listCmd(root,args.depth)
@@ -204,7 +211,7 @@ def main(root,args):
     else:
         copying(allow_git_dirty,root,dest)
 
-    for key, val in keypais.items(): 
+    for key, val in keypairs.items(): 
         fullReplace(dest,key,val)
 
     if not is_from_net or args.script_from_net:
@@ -248,6 +255,11 @@ def entry_point():
     parser = createParse()
     mainArgs=parser.parse_args()
     env_root,root = get_root()
+    if(mainArgs.version):
+        import pkg_resources  # part of setuptools
+        version = pkg_resources.require("coge")[0].version
+        print(version)
+        return 
     if env_root is None:
         fallbackdir= os.path.expanduser("~/.config/.code_template")
         Path(fallbackdir).mkdir(parents=True, exist_ok=True)
@@ -277,6 +289,7 @@ use git template from net : coge https://www.github.com/vitejs/vite \\bvite\\b:y
     parser.add_argument('-w', '--allow_git_dirty', help='alllow git dirty', default=False, action='store_true' ) 
     parser.add_argument('-s', '--script_from_net', help='alllow script from net', default=False, action='store_true' ) 
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  
+    parser.add_argument('-v', '--version', help='version', default=False, action='store_true' ) 
     parser.add_argument('magic', metavar="magic", type=str, nargs='*', 
             help='newkey:oldkey or @:folder_name')
     return parser
