@@ -38,7 +38,10 @@ main:
 
 
 dev:
-	@python3 -m coge -R
+	rm -rdf vue_mall3
+	@python3 -m coge vue_template coge_name:vue_mall   coge_author:zk "Welcome to Your Vue.js App":'hello, coge'  @:vue_mall3 -w
+
+
 
 
 version:

@@ -133,7 +133,7 @@ def fullReplace(root,oldKey,newKey):
                 continue
 
             oldfile = join(dname,filename)
-            if is_binary(oldKey):
+            if is_binary(oldfile):
                 logger.critical(oldfile + " is binary!")
                 continue
 
@@ -145,7 +145,6 @@ def fullReplace(root,oldKey,newKey):
                 continue
 
             contents = replaceWithCase(contents,oldKey,newKey)
-
             with open(oldfile,"w") as f:
                 f.write(contents)
 
@@ -154,7 +153,7 @@ def fullReplace(root,oldKey,newKey):
                     newfile = join(dname,replaceWithCase(filename,oldKey,newKey))
                     os.rename(oldfile,newfile)
 
-        # rename folder 
+        #  rename folder
         if oldKey.lower() in basename(dname).lower():
             destfolder = join(Path(dname).parent,replaceWithCase(basename(dname),oldKey,newKey))
             os.rename(dname,destfolder)

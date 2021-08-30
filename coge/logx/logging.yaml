@@ -17,13 +17,13 @@ handlers:
         class: coge.logx.ColoredHandler
 
 root:
-    level: DEBUG
+    level: INFO
     handlers: [colored,console]
     propagate: no
 
 loggers:
     logx:
-        level: DEBUG
+        level: INFO
         handlers: [colored,console]
         propagate: no
 
