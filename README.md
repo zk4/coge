@@ -81,16 +81,16 @@ git flow init
 
 # help
 ```
-usage: coge [-h] [-a ARG_PREFIX] [-l] [-c] [-r] [-w] [-s] [-d DEPTH] [-v]
-            [magic [magic ...]]
+usage: coge [-h] [-a ARG_PREFIX] [-l] [-c] [-r] [-R] [-w] [-s] [-d DEPTH] [-v]
+            [magic ...]
 
        make template link : cd x-engine-module-template && coge -r 
              use template : coge x-engine-module-template xxxx:camera @:x-engine-module-camera  
-use git template from net : coge https://www.github.com/vitejs/vite \\bvite\\b:your_vite @:your_vite  
+use git template from net : coge https://www.github.com/vitejs/vite \bvite\b:your_vite @:your_vite  
     
 
 positional arguments:
-  magic                  newkey:oldkey or @:folder_name
+  magic                 newkey:oldkey or @:folder_name
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -99,6 +99,7 @@ optional arguments:
   -l, --list            list folders
   -c, --cmd             cmd
   -r, --link_tplt       link `cwd` to $COGE_TMPLS
+  -R, --unlink_tplt     unlink `cwd`
   -w, --allow_git_dirty
                         alllow git dirty
   -s, --script_from_net
