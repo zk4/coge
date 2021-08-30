@@ -71,11 +71,11 @@ Supported timing and language:
 ```
 
 Ex:
-.coge.after.copy.sh
+put .coge.after.sh in your source template
 ```
 #!/bin/bash
+echo "init your git repo"
 git init 
-git flow init
 ```
 
 
