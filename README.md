@@ -63,11 +63,11 @@ For Safety reason. Template from network would need to use -s option to enforcin
 
 Supported timing and language:
 ```
-.coge.after.copy.sh
-.coge.before.copy.sh
+.coge.after.sh
+.coge.before.sh
 
-.coge.after.copy.py
-.coge.before.copy.py
+.coge.after.py
+.coge.before.py
 ```
 
 Ex:
@@ -100,8 +100,7 @@ optional arguments:
   -c, --cmd             cmd
   -r, --link_tplt       link `cwd` to $COGE_TMPLS
   -R, --unlink_tplt     unlink `cwd`
-  -w, --allow_git_dirty
-                        alllow git dirty
+  -w, --allow_git_dirty alllow git dirty, still, file not commited will not copy!
   -s, --script_from_net
                         alllow script from net
   -d DEPTH, --depth DEPTH

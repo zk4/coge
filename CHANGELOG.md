@@ -4,7 +4,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## 1.1.0 (2021-08-30)
 
-
 ### Features
 
 * add after script sh ([e8a1fc7](https://github.com/zk4/coge/commit/e8a1fc7312115cc7fb6417c52d45f12ef7bd9c77))

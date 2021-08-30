@@ -35,33 +35,33 @@ def isGitFolderClean(src):
     return len(list_of_files) == 0
 
 def gitLsFiles(src):
-    before_script=join(src,".coge.before.copy.py")
+    before_script=join(src,".coge.before.py")
     list_of_files = subprocess.check_output(f"cd {src}  && git ls-files", shell=True).splitlines()
     return list_of_files
 
 def before_copy(src,dest):
-    before_py_script=join(src,".coge.before.copy.py")
+    before_py_script=join(src,".coge.before.py")
     if os.path.isfile(before_py_script):
-        logger.warning(f'----------------coge.before.copy.py----------------------')
+        logger.warning(f'----------------.coge.before.py----------------------')
         subprocess.Popen(["python3",before_py_script],cwd=dest).communicate()
         logger.warning(f'---------------------------------------------------------')
 
-    before_sh_script=join(src,".coge.before.copy.sh")
+    before_sh_script=join(src,".coge.before.sh")
     if os.path.isfile(before_sh_script):
-        logger.warning(f'----------------coge.before.copy.sh----------------------')
+        logger.warning(f'----------------.coge.before.sh----------------------')
         subprocess.Popen(["bash" ,before_sh_script],cwd=dest).communicate()
         logger.warning(f'---------------------------------------------------------')
 
 def after_copy(src,dest):
-    after_py_script=join(src,".coge.after.copy.py")
+    after_py_script=join(src,".coge.after.py")
     if os.path.isfile(after_py_script):
-        logger.warning(f'----------------coge.after.copy.py----------------------')
+        logger.warning(f'----------------.coge.after.py----------------------')
         subprocess.Popen(["python3",after_py_script],cwd=dest).communicate()
         logger.warning(f'---------------------------------------------------------')
 
-    after_sh_script=join(src,".coge.after.copy.sh")
+    after_sh_script=join(src,".coge.after.sh")
     if os.path.isfile(after_sh_script):
-        logger.warning(f'----------------coge.after.copy.sh----------------------')
+        logger.warning(f'----------------.coge.after.sh----------------------')
         subprocess.Popen(["bash" ,after_sh_script],cwd=dest).communicate()
         logger.warning(f'---------------------------------------------------------')
 
