@@ -314,7 +314,7 @@ use git template from net : coge https://www.github.com/vitejs/vite \\bvite\\b:y
     parser.add_argument('-c', '--cmd', help='cmd', default=False, action='store_true' ,) 
     parser.add_argument('-r', '--link_tplt', help='link `cwd` to $COGE_TMPLS', default=False, action='store_true' ) 
     parser.add_argument('-R', '--unlink_tplt', help='unlink `cwd`', default=False, action='store_true' ) 
-    parser.add_argument('-w', '--allow_git_dirty', help='alllow git dirty', default=False, action='store_true' ) 
+    parser.add_argument('-w', '--allow_git_dirty', help='alllow git dirty, still, file not commited will not copy!', default=False, action='store_true' ) 
     parser.add_argument('-s', '--script_from_net', help='alllow script from net', default=False, action='store_true' ) 
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  
     parser.add_argument('-v', '--version', help='version', default=False, action='store_true' ) 
