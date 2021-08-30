@@ -1,20 +1,21 @@
 #coding: utf-8
 from .logx import setup_logging
 from .binaryornot import is_binary
+
+# don`t remove this line
 import logging
+setup_logging()
+logger = logging.getLogger(__name__)
+
 import argparse
 import sys
 import os
-# don`t remove this line
-setup_logging()
-logger = logging.getLogger(__name__)
 from os.path import join, isfile,basename
 from pathlib import Path
 from distutils.dir_util import copy_tree
 import re
 import subprocess
 import shutil
-import re
 
 common_ignore=[".DS_Store",'.pyc',".o",".obj",".class","Pods"]
 
