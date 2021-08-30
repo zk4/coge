@@ -287,6 +287,7 @@ def link():
     dest_tmpl = f"{root}/{dest_name}"
     if not os.path.isdir(dest_tmpl):
         subprocess.check_output(f"ln  -s $PWD {root}", shell=True)
+        logger.info(f'link:{cwd} --> {root}/{dest_name}')
     else:
         logger.warning(f"template {dest_tmpl} exits! Just use it. if you want to unlink it, use coge -R in your source folder")
 
@@ -297,6 +298,7 @@ def unlink():
     dest_tmpl = f"{root}/{dest_name}"
     if os.path.isdir(dest_tmpl):
         subprocess.check_output(f"rm -f  {dest_tmpl}", shell=True)
+        logger.info(f'unlink:{cwd} -x- {root}/{dest_name}')
     else:
         logger.warning(f"template {dest_tmpl} dose not exits!")
 
