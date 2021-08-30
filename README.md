@@ -55,7 +55,7 @@ call cg from terminal. and paste it.
 
 
 # timing script 
-you can put .coge.after.copy.sh in you template folder. 
+you can put .coge.after.sh in you template folder. 
 
 It will execute after copy, which is very handy.
 
