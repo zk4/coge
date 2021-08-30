@@ -44,26 +44,26 @@ def before_copy(src,dest):
     if os.path.isfile(before_py_script):
         logger.warning(f'----------------.coge.before.py----------------------')
         subprocess.Popen(["python3",before_py_script],cwd=dest).communicate()
-        logger.warning(f'---------------------------------------------------------')
+        logger.warning(f'-----------------------------------------------------')
 
     before_sh_script=join(src,".coge.before.sh")
     if os.path.isfile(before_sh_script):
         logger.warning(f'----------------.coge.before.sh----------------------')
         subprocess.Popen(["bash" ,before_sh_script],cwd=dest).communicate()
-        logger.warning(f'---------------------------------------------------------')
+        logger.warning(f'-----------------------------------------------------')
 
 def after_copy(src,dest):
     after_py_script=join(src,".coge.after.py")
     if os.path.isfile(after_py_script):
         logger.warning(f'----------------.coge.after.py----------------------')
         subprocess.Popen(["python3",after_py_script],cwd=dest).communicate()
-        logger.warning(f'---------------------------------------------------------')
+        logger.warning(f'-----------------------------------------------------')
 
     after_sh_script=join(src,".coge.after.sh")
     if os.path.isfile(after_sh_script):
         logger.warning(f'----------------.coge.after.sh----------------------')
         subprocess.Popen(["bash" ,after_sh_script],cwd=dest).communicate()
-        logger.warning(f'---------------------------------------------------------')
+        logger.warning(f'-----------------------------------------------------')
 
 def copying(allow_git_dirty, src,dest):
     if isGitFolder(src):
@@ -105,7 +105,7 @@ def copying(allow_git_dirty, src,dest):
     else:
         logger.critical("Not a git repo,full copy!")
         copy_tree(src, dest)
-    print("copying done -----------------------------------")
+        logger.warning(f'copy done -------------------------------------------')
 
 
 def replaceWithCase(content,before,after):
