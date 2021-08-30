@@ -95,4 +95,4 @@ source:
 	. venv/bin/activate
 
 auto_version:
-	python version.py
+	python3 version.py

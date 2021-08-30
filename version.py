@@ -31,5 +31,6 @@ else:
     sys.exit(0)
 
 newversion =f"{mainv}.{modulev}.{minorv}"
+
 versionfile.write_text(newversion+"\n"+current_commit)
 print(G + f"{version} -> {newversion}"+ W)
