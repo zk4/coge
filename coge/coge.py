@@ -1,5 +1,6 @@
 #coding: utf-8
 from .logx import setup_logging
+from .binaryornot import is_binary
 import logging
 import argparse
 import sys
@@ -132,6 +133,9 @@ def fullReplace(root,oldKey,newKey):
                 continue
 
             oldfile = join(dname,filename)
+            if is_binary(oldKey):
+                logger.critical(oldfile + " is binary!")
+                continue
 
             contents = ""
             try:
@@ -268,12 +272,33 @@ def entry_point():
     
     if mainArgs.link_tplt:
         link()
-    else:
-        main(root,mainArgs)
+        return 
+
+    if mainArgs.unlink_tplt:
+        unlink()
+        return 
+
+    main(root,mainArgs)
 
 def link():
-    env_root,root = get_root()
-    subprocess.check_output(f"ln  -s $PWD {root}", shell=True)
+    _ ,root = get_root()
+    cwd = os.getcwd()
+    dest_name = basename(cwd)
+    dest_tmpl = f"{root}/{dest_name}"
+    if not os.path.isdir(dest_tmpl):
+        subprocess.check_output(f"ln  -s $PWD {root}", shell=True)
+    else:
+        logger.warning(f"template {dest_tmpl} exits! Just use it. if you want to unlink it, use coge -R in your source folder")
+
+def unlink():
+    _ ,root = get_root()
+    cwd = os.getcwd()
+    dest_name = basename(cwd)
+    dest_tmpl = f"{root}/{dest_name}"
+    if os.path.isdir(dest_tmpl):
+        subprocess.check_output(f"rm -f  {dest_tmpl}", shell=True)
+    else:
+        logger.warning(f"template {dest_tmpl} dose not exits!")
 
 def createParse():
     parser = argparse.ArgumentParser( formatter_class=argparse.RawTextHelpFormatter, description="""
@@ -286,6 +311,7 @@ use git template from net : coge https://www.github.com/vitejs/vite \\bvite\\b:y
     parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,) 
     parser.add_argument('-c', '--cmd', help='cmd', default=False, action='store_true' ,) 
     parser.add_argument('-r', '--link_tplt', help='link `cwd` to $COGE_TMPLS', default=False, action='store_true' ) 
+    parser.add_argument('-R', '--unlink_tplt', help='unlink `cwd`', default=False, action='store_true' ) 
     parser.add_argument('-w', '--allow_git_dirty', help='alllow git dirty', default=False, action='store_true' ) 
     parser.add_argument('-s', '--script_from_net', help='alllow script from net', default=False, action='store_true' ) 
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  

@@ -1,4 +1,4 @@
-.PHONY: version
+.PHONY: version rm dev test coge
 rm: 
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
@@ -36,9 +36,9 @@ uninstall:
 main:
 	python3 main.py eat -c 2
 
-run:
-	@python3 -m coge https://www.github.com/zk4/coge Makefile:MaKe  @:Make -s
-	#@python3 -m coge toast toast:hello  @:hello -w
+
+dev:
+	@python3 -m coge -R
 
 
 version:
@@ -48,6 +48,7 @@ localrun:
 
 run:
 	@python3 -m coge https://github.com/vitejs/vite \\bvite\\b:viteme  @:viteme -s
+
 
 wrun:
 	watchexec -ce py 'python3 -m coge eat -c 2'
