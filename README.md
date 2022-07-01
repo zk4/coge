@@ -10,7 +10,7 @@ Compare to hygen, yo.
 - hygen pollutes all template files, and only support ejs.
 
 **What I only need:**
-1. template is runable as normal prj. No more \$placehold\$ stuff.
+1. template is runable as normal prj. No more %placehold% stuff.
 2. instinct command with the power of fzf.
 4. quick project to template and vice versa.
 3. respect .gitignore.
