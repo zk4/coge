@@ -81,7 +81,7 @@ git init
 
 # help
 ```
-usage: coge [-h] [-a ARG_PREFIX] [-l] [-c] [-r] [-R] [-w] [-s] [-d DEPTH] [-v]
+usage: coge [-h] [-a ARG_PREFIX] [-l] [-c] [-r] [-R] [-s] [-d DEPTH] [-v]
             [magic ...]
 
        make template link : cd x-engine-module-template && coge -r 
@@ -100,7 +100,6 @@ optional arguments:
   -c, --cmd             cmd
   -r, --link_tplt       link `cwd` to $COGE_TMPLS
   -R, --unlink_tplt     unlink `cwd`
-  -w, --allow_git_dirty alllow git dirty, still, file not commited will not copy!
   -s, --script_from_net
                         alllow script from net
   -d DEPTH, --depth DEPTH
