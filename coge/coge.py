@@ -68,9 +68,9 @@ def after_copy(src,dest):
 
 def copying(allow_git_dirty, src,dest):
     if isGitFolder(src):
-        if not allow_git_dirty and not isGitFolderClean(src):
-            logger.critical(f"{src} is not clean, commit your changes or git reset. or use -w to ignore this check")
-            sys.exit(0);
+        #  if not allow_git_dirty and not isGitFolderClean(src):
+        logger.critical(f"if {src} is not clean, commit your changes or git reset. or it will ignore the file changes")
+        #      sys.exit(0);
 
 
         gitfiles = gitLsFiles(src)
@@ -314,7 +314,7 @@ use git template from net : coge https://www.github.com/vitejs/vite \\bvite\\b:y
     parser.add_argument('-c', '--cmd', help='cmd', default=False, action='store_true' ,) 
     parser.add_argument('-r', '--link_tplt', help='link `cwd` to $COGE_TMPLS', default=False, action='store_true' ) 
     parser.add_argument('-R', '--unlink_tplt', help='unlink `cwd`', default=False, action='store_true' ) 
-    parser.add_argument('-w', '--allow_git_dirty', help='alllow git dirty, still, file not commited will not copy!', default=False, action='store_true' ) 
+    #  parser.add_argument('-w', '--allow_git_dirty', help='alllow git dirty, still, file not commited will not copy!', default=False, action='store_true' )
     parser.add_argument('-s', '--script_from_net', help='alllow script from net', default=False, action='store_true' ) 
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  
     parser.add_argument('-v', '--version', help='version', default=False, action='store_true' ) 
