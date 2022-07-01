@@ -66,7 +66,7 @@ def after_copy(src,dest):
         subprocess.Popen(["bash" ,after_sh_script],cwd=dest).communicate()
         logger.warning(f'-----------------------------------------------------')
 
-def copying(allow_git_dirty, src,dest):
+def copying(src,dest):
     if isGitFolder(src):
         #  if not allow_git_dirty and not isGitFolderClean(src):
         logger.critical(f"if {src} is not clean, commit your changes or git reset. or it will ignore the file changes")
@@ -197,7 +197,7 @@ def main(root,args):
     if os.path.isdir(dest):
         logger.critical(f"{dest} exists. rm it first!")
         return 
-    allow_git_dirty = args.allow_git_dirty
+    #  allow_git_dirty = args.allow_git_dirty
 
     tempalte_name = args.magic[0]
     is_from_net=tempalte_name.startswith("http://") or tempalte_name.startswith("https://") or tempalte_name.startswith("file://")
@@ -213,7 +213,7 @@ def main(root,args):
     if is_from_net:
         subprocess.Popen(["git","clone","--depth=1",tempalte_name,dest]).communicate()
     else:
-        copying(allow_git_dirty,root,dest)
+        copying(root,dest)
 
     for key, val in keypairs.items(): 
         fullReplace(dest,key,val)
