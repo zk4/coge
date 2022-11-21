@@ -200,7 +200,7 @@ def main(root,args):
     #  allow_git_dirty = args.allow_git_dirty
 
     tempalte_name = args.magic[0]
-    is_from_net=tempalte_name.startswith("http://") or tempalte_name.startswith("https://") or tempalte_name.startswith("file://")
+    is_from_net=tempalte_name.startswith("http://") or tempalte_name.startswith("https://") or tempalte_name.startswith("file://") or tempalte_name.startswith("git@")
 
 
     if is_from_net and args.script_from_net:
@@ -211,7 +211,8 @@ def main(root,args):
         logger.warn(f'before script will not run')
 
     if is_from_net:
-        subprocess.Popen(["git","clone","--depth=1",tempalte_name,dest]).communicate()
+        # -b opencv-2.4 --single-branch
+        subprocess.Popen(["git","clone","--depth=1","-b",args.branch, "--single-branch",tempalte_name,dest]).communicate()
     else:
         copying(root,dest)
 
@@ -309,6 +310,7 @@ def createParse():
 use git template from net : coge https://www.github.com/vitejs/vite \\bvite\\b:your_vite @:your_vite  
     """)
 
+    parser.add_argument('-b', '--branch',type=str,required=False, help='branch', default="master")  
     parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: COGE_ARG_', default="COGE_ARG_")  
     parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,) 
     parser.add_argument('-c', '--cmd', help='cmd', default=False, action='store_true' ,) 

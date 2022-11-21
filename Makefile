@@ -50,8 +50,8 @@ localrun:
 	@python3 -m coge x-engine-native-template xxxx:testme @:x-engine-native-template2 -w
 
 run:
-	@python3 -m coge https://github.com/vitejs/vite \\bvite\\b:viteme  @:viteme -s
-
+	# @python3 -m coge https://github.com/vitejs/vite \\bvite\\b:viteme  @:viteme -s
+	@python3 -m coge git@github.com:zk4/webpack-demo webpack-demo:github-demo  @:github-demo -s  -b guide/webpack-dev-server
 
 wrun:
 	watchexec -ce py 'python3 -m coge eat -c 2'
