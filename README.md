@@ -24,37 +24,38 @@ pip3 install coge
 ```
 
 # usage
+put this line in your `~/.bash_profile`, and change the `your_template_folder` to  the folder where you put your templates.
 ```
 export COGE_TMPLS="<your_template_folder>"
 ```
 
-## 1
+## demo 1
 ``` bash
 coge js react oldkey:newkey :newkey0 :newkey1 @:destname 
+
+# What coge does:
+# - copy $COGE_TMPLS/js/react to $PWD/destname
+# - change all names from oldkey to newkey,  from  COGE_ARG_0 to newkey0 ,from  COGE_ARG_1 to newkey1
+
 ```
-What coge does:
-
-- copy $COGE_TMPLS/js/react to $PWD/destname
-- change all names from oldkey to newkey,  from  COGE_ARG_0 to newkey0 ,from  COGE_ARG_1 to newkey1
-
-## 2
+## demo 2
 ``` bash
 coge js react
+# What coge does:
+# - Just copy $COGE_TMPLS/js/react to $PWD/app
 ```
-What coge does:
-- Just copy $COGE_TMPLS/js/react to $PWD/app
 
 
-# work with fzf
+# advanced tricks (optional)
+
+## work with fzf
 ``` 
 cg () {
 	eval `coge -c $@ | fzf --preview= --bind 'enter:execute-silent(pbcopy <<< {})+abort' ` && pbpaste
 }
 ```
 call cg from terminal. and paste it.
-
-
-# timing script 
+## hook script
 you can put .coge.after.sh in you template folder. 
 
 It will execute after copy, which is very handy.
@@ -76,6 +77,25 @@ put .coge.after.sh in your source template
 #!/bin/bash
 echo "init your git repo"
 git init 
+```
+
+## .coge.json 
+Sometimes we do not remember what the string we should repalce,
+put a `.coge.json` in your template project.
+coge would respect this json file to verify all replacements. 
+It is just a array with two types, map or string.
+all elements in the array must be fullfilled when doing the replacements.
+If some strings to be replaced are missed in the command line. Coge would automatically prompt up for user to supply.
+
+I think the configuration explains for itself.
+``` json
+[
+  {
+   "key": "cli",
+   "desc": "this is blala"
+  },
+  "projectname"
+]
 ```
 
 
