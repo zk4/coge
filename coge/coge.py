@@ -116,7 +116,7 @@ def replace_with_case(content,before,after):
         for c,d in zip(x.group()+after[len(x.group()):], after)), content)
     return partial
 
-def fullReplace(root,oldKey,newKey):
+def full_repalcement(root,oldKey,newKey):
     if oldKey == newKey or len(newKey)==0:
         return
 
@@ -216,7 +216,7 @@ def main(root,args):
     
     
     if args.cmd or len(args.magic)==0:
-        listCmd(root,args.depth)
+        list_commands(root,args.depth)
         return 
 
     if args.list or len(args.magic)==0:
@@ -247,7 +247,7 @@ def main(root,args):
         copying(root,dest)
 
     for key, val in keypairs.items(): 
-        fullReplace(dest,key,val)
+        full_repalcement(dest,key,val)
 
     if not is_from_net or args.script_from_net:
         after_copy(root,dest)
@@ -267,7 +267,7 @@ def list_target(root,depth):
         if  cdepth < depth:
             print("     "*(cdepth-1) , basename(dname))
 
-def listCmd(root,depth):
+def list_commands(root,depth):
     stuff = os.path.abspath(os.path.expanduser(os.path.expandvars(root)))
     
     for dname,dirs,files in os.walk(stuff, followlinks=True):
