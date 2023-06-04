@@ -1,4 +1,11 @@
-.PHONY: version rm dev test coge auto_version upload-to-prod
+.PHONY: version rm dev test coge auto_version upload-to-prod init requirements.txt pip
+
+SOURCE_ENV = . venv/bin/activate
+
+# Indicates each line of command in target would run in one shell , 
+# only make file version >=3.8.2 support 
+.ONESHELL:
+
 rm: 
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
@@ -38,16 +45,13 @@ main:
 
 
 dev:
-	rm -rdf vue_mall3
-	@python3 -m coge vue_template coge_name:vue_mall   coge_author:zk "Welcome to Your Vue.js App":'hello, coge'  @:vue_mall3 -w
-
-
+	# @python3 -m coge vue_template coge_name:vue_mall   coge_author:zk "Welcome to Your Vue.js App":'hello, coge'  @:vue_mall3 -w
+	rm -rdf ap
+	@python  main.py  python cli @:hello
 
 
 version:
 	@python3 -m coge -v
-localrun:
-	@python3 -m coge x-engine-native-template xxxx:testme @:x-engine-native-template2 -w
 
 run:
 	# @python3 -m coge https://github.com/vitejs/vite \\bvite\\b:viteme  @:viteme -s
@@ -73,10 +77,6 @@ upload-to-prod: rm auto_version
 	twine upload dist/*
 
 
-freeze: auto_version
-	# pipreqs will find the module the project really depneds
-	# Don`t use this !
-	pipreqs . --force
 
 freeze-env: auto_version
 	#  pip3 will find all the module not belong to standard  library
@@ -92,10 +92,17 @@ env-create:
 env: env-create
 	pip3 install -r requirements.txt
 
-source: 
-	echo "you need to manully source it"
-	echo ". env/bin/activate"
-	. venv/bin/activate
 
 auto_version:
 	python3 version.py
+
+venv_rm:
+	rm -rdf venv
+
+venv: venv_rm
+	python3 -m venv --clear venv
+	pip install -r requirements.txt
+		
+requirements.txt: 
+	pip3 freeze > requirements.txt
+	

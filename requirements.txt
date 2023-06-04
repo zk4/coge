@@ -1,2 +1,4 @@
-PyYAML==5.3.1
 binaryornot==0.4.4
+  chardet==5.1.0
+PyYAML==5.3.1
+setuptools==65.6.3

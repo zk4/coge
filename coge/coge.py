@@ -8,7 +8,6 @@ setup_logging()
 logger = logging.getLogger(__name__)
 
 import argparse
-import sys
 import os
 from os.path import join, isfile,basename
 from pathlib import Path
@@ -17,9 +16,12 @@ import re
 import subprocess
 import shutil
 
+COGE_CONFIG_FILE = ".coge.json"
+COGE_HISTORY_FILE = ".coge.history"
+
 common_ignore=[".DS_Store",'.pyc',".o",".obj",".class","Pods"]
 
-def isGitFolder(src):
+def is_git_folder(src):
     try:
         subprocess.check_output(f"cd {src}  && git status ", shell=True).splitlines()
     except Exception as e:
@@ -27,7 +29,7 @@ def isGitFolder(src):
     return True
 
 # this command will respect .gitignore
-def isGitFolderClean(src):
+def is_git_folder_clean(src):
     list_of_files =[]
     try:
         list_of_files = subprocess.check_output(f"cd {src}  && git status -s", shell=True).splitlines()
@@ -35,7 +37,7 @@ def isGitFolderClean(src):
         pass
     return len(list_of_files) == 0
 
-def gitLsFiles(src):
+def git_ls_files(src):
     before_script=join(src,".coge.before.py")
     list_of_files = subprocess.check_output(f"cd {src}  && git ls-files", shell=True).splitlines()
     return list_of_files
@@ -67,13 +69,13 @@ def after_copy(src,dest):
         logger.warning(f'-----------------------------------------------------')
 
 def copying(src,dest):
-    if isGitFolder(src):
-        #  if not allow_git_dirty and not isGitFolderClean(src):
+    if is_git_folder(src):
+        #  if not allow_git_dirty and not is_git_folder_clean(src):
         logger.critical(f"if {src} is not clean, commit your changes or git reset. or it will ignore the file changes")
         #      sys.exit(0);
 
 
-        gitfiles = gitLsFiles(src)
+        gitfiles = git_ls_files(src)
 
         logger.info(f'{src} is git repo')
 
@@ -95,7 +97,6 @@ def copying(src,dest):
                     break
             if isbreak:
                 continue
-            
 
             try:
                 shutil.copy(join(src,f), join(dest,f),follow_symlinks=False)
@@ -109,7 +110,7 @@ def copying(src,dest):
         logger.warning(f'copy done -------------------------------------------')
 
 
-def replaceWithCase(content,before,after):
+def replace_with_case(content,before,after):
     regex = re.compile(re.escape(before), re.I)
     partial= regex.sub(lambda x: ''.join(d.upper() if c.isupper() else d.lower()
         for c,d in zip(x.group()+after[len(x.group()):], after)), content)
@@ -135,7 +136,7 @@ def fullReplace(root,oldKey,newKey):
 
             oldfile = join(dname,filename)
             if is_binary(oldfile):
-                logger.critical(oldfile + " is binary!")
+                logger.info(oldfile + " is binary!")
                 continue
 
             contents = ""
@@ -145,19 +146,32 @@ def fullReplace(root,oldKey,newKey):
                 print(f"{oldfile} error: pass", e)
                 continue
 
-            contents = replaceWithCase(contents,oldKey,newKey)
+            contents = replace_with_case(contents,oldKey,newKey)
             with open(oldfile,"w") as f:
                 f.write(contents)
 
             if isfile(oldfile):
                 if oldKey.upper() in filename.upper():
-                    newfile = join(dname,replaceWithCase(filename,oldKey,newKey))
+                    newfile = join(dname,replace_with_case(filename,oldKey,newKey))
                     os.rename(oldfile,newfile)
 
         #  rename folder
         if oldKey.lower() in basename(dname).lower() and (dname != root):
-            destfolder = join(Path(dname).parent,replaceWithCase(basename(dname),oldKey,newKey))
+            destfolder = join(Path(dname).parent,replace_with_case(basename(dname),oldKey,newKey))
             os.rename(dname,destfolder)
+
+def get_coge_config(root):
+    # Check if the file exists
+    target = join(root,COGE_CONFIG_FILE)
+    if os.path.isfile(target):
+        print("The file exists.")
+        import json
+        with open(target) as file:
+            # Load the contents of the file
+            data = json.load(file)
+            return data
+    else:
+        return []
 
 def main(root,args):
     keypairs={}
@@ -184,12 +198,29 @@ def main(root,args):
                 idx+=1
             keypairs[key] = val
 
+    coge_config =  get_coge_config(root)
+    for o in coge_config:
+        key  = o
+        desc = ""
+        if type(o) == dict:
+            key = o["key"]
+            desc = o["desc"]
+        if key not in keypairs:
+            if type(key) == str:
+                v = input(f'Need key [{key}]: ')
+                keypairs[key] = v
+            else:
+                v = input(f'Need key [{key}], {desc}: ')
+                keypairs[key] = v
+
+    
+    
     if args.cmd or len(args.magic)==0:
         listCmd(root,args.depth)
         return 
 
     if args.list or len(args.magic)==0:
-        listTarget(root,args.depth)
+        list_target(root,args.depth)
         return 
 
     cwd = os.getcwd()
@@ -197,7 +228,6 @@ def main(root,args):
     if os.path.isdir(dest):
         logger.critical(f"{dest} exists. rm it first!")
         return 
-    #  allow_git_dirty = args.allow_git_dirty
 
     tempalte_name = args.magic[0]
     is_from_net=tempalte_name.startswith("http://") or tempalte_name.startswith("https://") or tempalte_name.startswith("file://") or tempalte_name.startswith("git@")
@@ -226,7 +256,7 @@ def main(root,args):
 
 
 
-def listTarget(root,depth):
+def list_target(root,depth):
     stuff = os.path.abspath(os.path.expanduser(os.path.expandvars(root)))
 
     for dname,dirs,files in os.walk(stuff, followlinks=True):
@@ -257,7 +287,7 @@ def get_root():
     return env_root,root
 
 def entry_point():
-    parser = createParse()
+    parser = create_parser()
     mainArgs=parser.parse_args()
     env_root,root = get_root()
     if(mainArgs.version):
@@ -303,7 +333,7 @@ def unlink():
     else:
         logger.warning(f"template {dest_tmpl} dose not exits!")
 
-def createParse():
+def create_parser():
     parser = argparse.ArgumentParser( formatter_class=argparse.RawTextHelpFormatter, description="""
        make template link : cd x-engine-module-template && coge -r 
              use template : coge x-engine-module-template xxxx:camera @:x-engine-module-camera  
@@ -316,7 +346,6 @@ use git template from net : coge https://www.github.com/vitejs/vite \\bvite\\b:y
     parser.add_argument('-c', '--cmd', help='cmd', default=False, action='store_true' ,) 
     parser.add_argument('-r', '--link_tplt', help='link `cwd` to $COGE_TMPLS', default=False, action='store_true' ) 
     parser.add_argument('-R', '--unlink_tplt', help='unlink `cwd`', default=False, action='store_true' ) 
-    #  parser.add_argument('-w', '--allow_git_dirty', help='alllow git dirty, still, file not commited will not copy!', default=False, action='store_true' )
     parser.add_argument('-s', '--script_from_net', help='alllow script from net', default=False, action='store_true' ) 
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  
     parser.add_argument('-v', '--version', help='version', default=False, action='store_true' ) 
