@@ -1,18 +1,12 @@
+> How I reuse a existing project as a template effectively? 
+
 ![image-20210312140113821](https://raw.githubusercontent.com/zk4/image_backup/main/img/image-20210312140113821.png)
-
-
 
 Simple yet powerful code generator.
 Make use of existing tool as possiable as we can.
 
-Compare to hygen, yo.
-- yo is way too slow and complicated.
-- hygen pollutes all template files, and only support ejs.
-
-**What I only need:**
+**Small features:**
 1. template is runable as normal prj. No more %placehold% stuff.
-2. instinct command with the power of fzf.
-4. quick project to template and vice versa.
 3. respect .gitignore.
 3. support github.com repo.
 5. plugin in any language only if you can run it in shell.
