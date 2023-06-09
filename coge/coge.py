@@ -23,7 +23,10 @@ common_ignore=[".DS_Store",'.pyc',".o",".obj",".class","Pods"]
 
 def is_git_folder(src):
     try:
-        subprocess.check_output(f"cd {src}  && git status ", shell=True).splitlines()
+        if not os.path.isfile(src):
+            subprocess.check_output(f"cd {src}  && git status ", shell=True).splitlines()
+        else:
+            return False
     except Exception as e:
         return False
     return True
@@ -69,14 +72,10 @@ def after_copy(src,dest):
         logger.warning(f'-----------------------------------------------------')
 
 def copying(src,dest):
+    print(src,dest)
     if is_git_folder(src):
-        #  if not allow_git_dirty and not is_git_folder_clean(src):
         logger.critical(f"if {src} is not clean, commit your changes or git reset. or it will ignore the file changes")
-        #      sys.exit(0);
-
-
         gitfiles = git_ls_files(src)
-
         logger.info(f'{src} is git repo')
 
         if len(gitfiles)==0:
@@ -106,8 +105,11 @@ def copying(src,dest):
                 pass
     else:
         logger.critical("Not a git repo,full copy!")
-        copy_tree(src, dest)
-        logger.warning(f'copy done -------------------------------------------')
+        if os.path.isfile(src):
+            shutil.copyfile(src,dest)
+        else:
+            copy_tree(src, dest)
+            logger.warning(f'copy done -------------------------------------------')
 
 
 def replace_with_case(content,before,after):
@@ -116,11 +118,11 @@ def replace_with_case(content,before,after):
         for c,d in zip(x.group()+after[len(x.group()):], after)), content)
     return partial
 
-def full_repalcement(root,oldKey,newKey):
+def full_repalcement(code_template_folder,oldKey,newKey):
     if oldKey == newKey or len(newKey)==0:
         return
 
-    for dname, dirs, files in os.walk(root,topdown=False):
+    for dname, dirs, files in os.walk(code_template_folder,topdown=False):
         dirs[:] = [d for d in dirs if not d == '.git']
         for filename in files:
 
@@ -156,13 +158,13 @@ def full_repalcement(root,oldKey,newKey):
                     os.rename(oldfile,newfile)
 
         #  rename folder
-        if oldKey.lower() in basename(dname).lower() and (dname != root):
+        if oldKey.lower() in basename(dname).lower() and (dname != code_template_folder):
             destfolder = join(Path(dname).parent,replace_with_case(basename(dname),oldKey,newKey))
             os.rename(dname,destfolder)
 
-def get_coge_config(root):
+def get_coge_config(code_template_folder):
     # Check if the file exists
-    target = join(root,COGE_CONFIG_FILE)
+    target = join(code_template_folder,COGE_CONFIG_FILE)
     if os.path.isfile(target):
         print("The file exists.")
         import json
@@ -173,16 +175,20 @@ def get_coge_config(root):
     else:
         return []
 
-def main(root,args):
+def main(args):
+    code_template_folder = get_code_template_folder()
+    targets = code_template_folder
     keypairs={}
-    prefix = args.arg_prefix or "COGE_ARG_"
 
-    idx = 0
-
-    target_foldername = "app"
+    target_name = "app"
     for m in args.magic:
-        if ":" not in m:
-            root = join(root,m)
+        if "." == m:
+            pass
+        elif ":" not in m:
+            print("m",m)
+            targets = join(targets,m)
+            if os.path.isfile(targets):
+                target_name = m
         else:
             ms = m.split(":")
             key = ms[0]
@@ -191,14 +197,11 @@ def main(root,args):
                 print(f"keypair: {key}:{val} must not be the same!")
                 return
             if key=="@":
-                target_foldername=val
+                target_name=val
                 continue
-            if len(key.strip()) == 0:
-                key = prefix +str(idx)
-                idx+=1
             keypairs[key] = val
 
-    coge_config =  get_coge_config(root)
+    coge_config =  get_coge_config(targets)
     for o in coge_config:
         key  = o
         desc = ""
@@ -214,17 +217,16 @@ def main(root,args):
                 keypairs[key] = v
 
 
-
     if args.cmd or len(args.magic)==0:
-        list_commands(root,args.depth)
+        list_commands(targets,args.depth)
         return
 
     if args.list or len(args.magic)==0:
-        list_target(root,args.depth)
+        list_target(targets,args.depth)
         return
 
     cwd = os.getcwd()
-    dest = join(cwd,target_foldername)
+    dest = join(cwd,target_name)
     if os.path.isdir(dest):
         logger.critical(f"{dest} exists. rm it first!")
         return
@@ -236,28 +238,28 @@ def main(root,args):
     if is_from_net and args.script_from_net:
         logger.critical(f"template is from net! Script will run cause you use -s option! BE CAUTION!")
     if not is_from_net or args.script_from_net:
-        before_copy(root,dest)
+        #  print(targets)
+        #  return
+        before_copy(code_template_folder,dest)
     else:
         logger.warn(f'before script will not run')
 
     if is_from_net:
-        # -b opencv-2.4 --single-branch
         subprocess.Popen(["git","clone","--depth=1","-b",args.branch, "--single-branch",tempalte_name,dest]).communicate()
     else:
-        copying(root,dest)
+        copying(targets,dest)
 
     for key, val in keypairs.items():
         full_repalcement(dest,key,val)
 
     if not is_from_net or args.script_from_net:
-        after_copy(root,dest)
+        after_copy(targets,dest)
     else:
         logger.warn(f'after script will not run')
 
 
-
-def list_target(root,depth):
-    stuff = os.path.abspath(os.path.expanduser(os.path.expandvars(root)))
+def list_target(code_template_folder,depth):
+    stuff = os.path.abspath(os.path.expanduser(os.path.expandvars(code_template_folder)))
 
     for dname,dirs,files in os.walk(stuff, followlinks=True):
         dirs[:] = [d for d in dirs if not d == '.git']
@@ -267,8 +269,8 @@ def list_target(root,depth):
         if  cdepth < depth:
             print("     "*(cdepth-1) , basename(dname))
 
-def list_commands(root,depth):
-    stuff = os.path.abspath(os.path.expanduser(os.path.expandvars(root)))
+def list_commands(code_template_folder,depth):
+    stuff = os.path.abspath(os.path.expanduser(os.path.expandvars(code_template_folder)))
 
     for dname,dirs,files in os.walk(stuff, followlinks=True):
         dirs[:] = [d for d in dirs if not d == '.git']
@@ -276,30 +278,28 @@ def list_commands(root,depth):
         if basename(dname).startswith(".") or ".git" in dname or "__pycache__" in dname:
             continue
         if  cdepth < depth:
-            print("coge",re.sub("/"," ",re.sub(root,"",dname)),"@:app")
-        olddepth = cdepth
+            print("coge",re.sub("/"," ",re.sub(code_template_folder,"",dname)),"@:app")
 
 
 
-def get_root():
+def get_code_template_folder():
     env_root = os.environ.get("COGE_TMPLS") or os.environ.get("CG_TMPLS")
-    root  = env_root or os.path.expanduser("~/.config/.code_template")
-    return env_root,root
-
-def entry_point():
-    parser = create_parser()
-    mainArgs=parser.parse_args()
-    env_root,root = get_root()
-    if(mainArgs.version):
-        import pkg_resources  # part of setuptools
-        version = pkg_resources.require("coge")[0].version
-        print(version)
-        return
     if env_root is None:
         fallbackdir= os.path.expanduser("~/.config/.code_template")
         Path(fallbackdir).mkdir(parents=True, exist_ok=True)
         logger.warning(f"env COGE_TMPLS is not definded! use default tmplts location: {fallbackdir}")
 
+    code_template_folder  = env_root or os.path.expanduser("~/.config/.code_template")
+    return code_template_folder
+
+def entry_point():
+    parser = create_parser()
+    mainArgs=parser.parse_args()
+    if(mainArgs.version):
+        import pkg_resources  # part of setuptools
+        version = pkg_resources.require("coge")[0].version
+        print(version)
+        return
 
     if mainArgs.link_target:
         t = mainArgs.link_target
@@ -312,29 +312,29 @@ def entry_point():
         unlink(t)
         return
 
-    main(root,mainArgs)
+    main(mainArgs)
 
 def link(apath):
-    _ ,root = get_root()
-    print(root)
+    code_template_folder = get_code_template_folder()
+    print(code_template_folder)
     cwd = os.getcwd()
     dest_name = basename(cwd)
-    dest_tmpl = f"{root}/{dest_name}"
+    dest_tmpl = f"{code_template_folder}/{dest_name}"
 
     if not os.path.exists(dest_tmpl):
-        logger.info(f'link:{apath} --> {root}/{dest_name}')
+        logger.info(f'link:{apath} --> {code_template_folder}/{dest_name}')
     else:
         logger.warning(f"target {dest_tmpl} exits! Just use it. if you want to unlink it, use coge -R in your source folder or file")
         exit()
 
     if os.path.isfile(apath):
-        subprocess.check_output(f"ln  -s {apath} {root}", shell=True)
+        subprocess.check_output(f"ln  -s {apath} {code_template_folder}", shell=True)
     else:
-        subprocess.check_output(f"ln  -s {apath} {root}", shell=True)
+        subprocess.check_output(f"ln  -s {apath} {code_template_folder}", shell=True)
 
 def unlink(dest_name):
-    _ ,root = get_root()
-    dest_tmpl = f"{root}/{dest_name}"
+    code_template_folder = get_code_template_folder()
+    dest_tmpl = f"{code_template_folder}/{dest_name}"
     print(dest_tmpl)
     if os.path.exists(dest_tmpl):
         logger.info(f'Removed. {dest_tmpl}')
@@ -351,16 +351,15 @@ use git template from net : coge https://www.github.com/vitejs/vite \\bvite\\b:y
     """)
 
     parser.add_argument('-b', '--branch',type=str,required=False, help='branch', default="master")
-    parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: COGE_ARG_', default="COGE_ARG_")
     parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,)
     parser.add_argument('-c', '--cmd', help='cmd', default=False, action='store_true' ,)
-    #  parser.add_argument('-r', '--link_tplt', help='link `cwd` to $COGE_TMPLS', default=False, action='store_true' )
     parser.add_argument('-r', '--link_target',type=str,required=False, help='link target to $COGE_TMPLS, target must be a relative folder / file', default="")
     parser.add_argument('-R', '--unlink_target',type=str,required=False, help='unlink target to $COGE_TMPLS, target must be a relative folder / file', default="")
 
     parser.add_argument('-s', '--script_from_net', help='alllow script from net', default=False, action='store_true' )
     parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)
     parser.add_argument('-v', '--version', help='version', default=False, action='store_true' )
+
     parser.add_argument('magic', metavar="magic", type=str, nargs='*',
             help='newkey:oldkey or @:folder_name')
     return parser
