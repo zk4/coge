@@ -95,12 +95,13 @@ I think the configuration explains for itself.
 
 # help
 ```
-usage: coge [-h] [-a ARG_PREFIX] [-l] [-c] [-r] [-R] [-s] [-d DEPTH] [-v]
+usage: coge [-h] [-b BRANCH] [-l] [-c] [-r LINK_TARGET] [-R UNLINK_TARGET]
+            [-s] [-d DEPTH] [-v]
             [magic ...]
 
-       make template link : cd x-engine-module-template && coge -r 
-             use template : coge x-engine-module-template xxxx:camera @:x-engine-module-camera  
-use git template from net : coge https://www.github.com/vitejs/vite \bvite\b:your_vite @:your_vite  
+       make template link : cd x-engine-module-template && coge -r
+             use template : coge x-engine-module-template xxxx:camera @:x-engine-module-camera
+use git template from net : coge https://www.github.com/vitejs/vite \bvite\b:your_vite @:your_vite
     
 
 positional arguments:
@@ -108,12 +109,14 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -a ARG_PREFIX, --arg_prefix ARG_PREFIX
-                        ex: COGE_ARG_
+  -b BRANCH, --branch BRANCH
+                        branch
   -l, --list            list folders
   -c, --cmd             cmd
-  -r, --link_tplt       link `cwd` to $COGE_TMPLS
-  -R, --unlink_tplt     unlink `cwd`
+  -r LINK_TARGET, --link_target LINK_TARGET
+                        link target to $COGE_TMPLS, target must be a relative folder / file
+  -R UNLINK_TARGET, --unlink_target UNLINK_TARGET
+                        unlink target to $COGE_TMPLS, target must be a relative folder / file
   -s, --script_from_net
                         alllow script from net
   -d DEPTH, --depth DEPTH
