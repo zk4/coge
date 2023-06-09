@@ -238,8 +238,6 @@ def main(args):
     if is_from_net and args.script_from_net:
         logger.critical(f"template is from net! Script will run cause you use -s option! BE CAUTION!")
     if not is_from_net or args.script_from_net:
-        #  print(targets)
-        #  return
         before_copy(code_template_folder,dest)
     else:
         logger.warn(f'before script will not run')
