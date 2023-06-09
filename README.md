@@ -6,7 +6,7 @@ Simple yet powerful code generator.
 Make use of existing tool as possiable as we can.
 
 **Small features:**
-1. template is runable as normal prj. No more %placehold% stuff.
+1. template is runnable as normal prj. No more %placehold% stuff.
 3. respect .gitignore.
 3. support github.com repo.
 5. plugin in any language only if you can run it in shell.
