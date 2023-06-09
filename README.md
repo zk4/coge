@@ -21,12 +21,13 @@ pip3 install coge
 ``` bash
 cd js/react
 coge -r .
+cd <other_location>
 coge js react oldkey:newkey @:destname
 
-# What coge does:  copy folder, and replace any text that is `oldkey` to `newkey`, include file name, folder name, and content
-
 ```
+What coge does:  copy `COGE_TMPLS`/js/react to `other_location`/destname, and replace any text that is `oldkey` to `newkey`, include file name, folder name, and content
 
+> COGE_TMPLS default is ~/.code_template
 
 # advanced tricks (optional)
 
