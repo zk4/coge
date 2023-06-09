@@ -189,7 +189,7 @@ def main(root,args):
             val = ms[1]
             if key == val:
                 print(f"keypair: {key}:{val} must not be the same!")
-                return 
+                return
             if key=="@":
                 target_foldername=val
                 continue
@@ -213,21 +213,21 @@ def main(root,args):
                 v = input(f'Need key [{key}], {desc}: ')
                 keypairs[key] = v
 
-    
-    
+
+
     if args.cmd or len(args.magic)==0:
         list_commands(root,args.depth)
-        return 
+        return
 
     if args.list or len(args.magic)==0:
         list_target(root,args.depth)
-        return 
+        return
 
     cwd = os.getcwd()
     dest = join(cwd,target_foldername)
     if os.path.isdir(dest):
         logger.critical(f"{dest} exists. rm it first!")
-        return 
+        return
 
     tempalte_name = args.magic[0]
     is_from_net=tempalte_name.startswith("http://") or tempalte_name.startswith("https://") or tempalte_name.startswith("file://") or tempalte_name.startswith("git@")
@@ -246,7 +246,7 @@ def main(root,args):
     else:
         copying(root,dest)
 
-    for key, val in keypairs.items(): 
+    for key, val in keypairs.items():
         full_repalcement(dest,key,val)
 
     if not is_from_net or args.script_from_net:
@@ -269,7 +269,7 @@ def list_target(root,depth):
 
 def list_commands(root,depth):
     stuff = os.path.abspath(os.path.expanduser(os.path.expandvars(root)))
-    
+
     for dname,dirs,files in os.walk(stuff, followlinks=True):
         dirs[:] = [d for d in dirs if not d == '.git']
         cdepth = dname[len(stuff):].count(os.sep)
@@ -277,7 +277,7 @@ def list_commands(root,depth):
             continue
         if  cdepth < depth:
             print("coge",re.sub("/"," ",re.sub(root,"",dname)),"@:app")
-        olddepth = cdepth 
+        olddepth = cdepth
 
 
 
@@ -294,61 +294,73 @@ def entry_point():
         import pkg_resources  # part of setuptools
         version = pkg_resources.require("coge")[0].version
         print(version)
-        return 
+        return
     if env_root is None:
         fallbackdir= os.path.expanduser("~/.config/.code_template")
         Path(fallbackdir).mkdir(parents=True, exist_ok=True)
         logger.warning(f"env COGE_TMPLS is not definded! use default tmplts location: {fallbackdir}")
 
-    
-    if mainArgs.link_tplt:
-        link()
-        return 
 
-    if mainArgs.unlink_tplt:
-        unlink()
-        return 
+    if mainArgs.link_target:
+        t = mainArgs.link_target
+        apath = os.path.abspath(t)
+        link(apath)
+        return
+
+    if mainArgs.unlink_target:
+        t = mainArgs.unlink_target
+        unlink(t)
+        return
 
     main(root,mainArgs)
 
-def link():
+def link(apath):
     _ ,root = get_root()
+    print(root)
     cwd = os.getcwd()
     dest_name = basename(cwd)
     dest_tmpl = f"{root}/{dest_name}"
-    if not os.path.isdir(dest_tmpl):
-        subprocess.check_output(f"ln  -s $PWD {root}", shell=True)
-        logger.info(f'link:{cwd} --> {root}/{dest_name}')
-    else:
-        logger.warning(f"template {dest_tmpl} exits! Just use it. if you want to unlink it, use coge -R in your source folder")
 
-def unlink():
-    _ ,root = get_root()
-    cwd = os.getcwd()
-    dest_name = basename(cwd)
-    dest_tmpl = f"{root}/{dest_name}"
-    if os.path.isdir(dest_tmpl):
-        subprocess.check_output(f"rm -f  {dest_tmpl}", shell=True)
-        logger.info(f'unlink:{cwd} -x- {root}/{dest_name}')
+    if not os.path.exists(dest_tmpl):
+        logger.info(f'link:{apath} --> {root}/{dest_name}')
     else:
-        logger.warning(f"template {dest_tmpl} dose not exits!")
+        logger.warning(f"target {dest_tmpl} exits! Just use it. if you want to unlink it, use coge -R in your source folder or file")
+        exit()
+
+    if os.path.isfile(apath):
+        subprocess.check_output(f"ln  -s {apath} {root}", shell=True)
+    else:
+        subprocess.check_output(f"ln  -s {apath} {root}", shell=True)
+
+def unlink(dest_name):
+    _ ,root = get_root()
+    dest_tmpl = f"{root}/{dest_name}"
+    print(dest_tmpl)
+    if os.path.exists(dest_tmpl):
+        logger.info(f'Removed. {dest_tmpl}')
+    else:
+        logger.warning(f"target {dest_tmpl} does not exits!")
+        exit()
+    subprocess.check_output(f"rm -f  {dest_tmpl}", shell=True)
 
 def create_parser():
     parser = argparse.ArgumentParser( formatter_class=argparse.RawTextHelpFormatter, description="""
-       make template link : cd x-engine-module-template && coge -r 
-             use template : coge x-engine-module-template xxxx:camera @:x-engine-module-camera  
-use git template from net : coge https://www.github.com/vitejs/vite \\bvite\\b:your_vite @:your_vite  
+       make template link : cd x-engine-module-template && coge -r
+             use template : coge x-engine-module-template xxxx:camera @:x-engine-module-camera
+use git template from net : coge https://www.github.com/vitejs/vite \\bvite\\b:your_vite @:your_vite
     """)
 
-    parser.add_argument('-b', '--branch',type=str,required=False, help='branch', default="master")  
-    parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: COGE_ARG_', default="COGE_ARG_")  
-    parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,) 
-    parser.add_argument('-c', '--cmd', help='cmd', default=False, action='store_true' ,) 
-    parser.add_argument('-r', '--link_tplt', help='link `cwd` to $COGE_TMPLS', default=False, action='store_true' ) 
-    parser.add_argument('-R', '--unlink_tplt', help='unlink `cwd`', default=False, action='store_true' ) 
-    parser.add_argument('-s', '--script_from_net', help='alllow script from net', default=False, action='store_true' ) 
-    parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)  
-    parser.add_argument('-v', '--version', help='version', default=False, action='store_true' ) 
-    parser.add_argument('magic', metavar="magic", type=str, nargs='*', 
+    parser.add_argument('-b', '--branch',type=str,required=False, help='branch', default="master")
+    parser.add_argument('-a', '--arg_prefix',type=str,required=False, help='ex: COGE_ARG_', default="COGE_ARG_")
+    parser.add_argument('-l', '--list', help='list folders', default=False, action='store_true' ,)
+    parser.add_argument('-c', '--cmd', help='cmd', default=False, action='store_true' ,)
+    #  parser.add_argument('-r', '--link_tplt', help='link `cwd` to $COGE_TMPLS', default=False, action='store_true' )
+    parser.add_argument('-r', '--link_target',type=str,required=False, help='link target to $COGE_TMPLS, target must be a relative folder / file', default="")
+    parser.add_argument('-R', '--unlink_target',type=str,required=False, help='unlink target to $COGE_TMPLS, target must be a relative folder / file', default="")
+
+    parser.add_argument('-s', '--script_from_net', help='alllow script from net', default=False, action='store_true' )
+    parser.add_argument('-d', '--depth',type=int,required=False, help='list depth', default=3)
+    parser.add_argument('-v', '--version', help='version', default=False, action='store_true' )
+    parser.add_argument('magic', metavar="magic", type=str, nargs='*',
             help='newkey:oldkey or @:folder_name')
     return parser

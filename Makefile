@@ -2,11 +2,11 @@
 
 SOURCE_ENV = . venv/bin/activate
 
-# Indicates each line of command in target would run in one shell , 
-# only make file version >=3.8.2 support 
+# Indicates each line of command in target would run in one shell ,
+# only make file version >=3.8.2 support
 .ONESHELL:
 
-rm: 
+rm:
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '*~' -exec rm -f {} +
@@ -19,14 +19,14 @@ rm:
 	rm -rf .pytest_cache
 	rm -rf .hypothesis
 	rm -rdf assets
-	
+
 
 test: rm
 	watchexec -ce py 'pytest -s -v  tests/'
 
 coverage-html:
 	# --cov where you want to cover
-	#  tests  where your test code is 
+	#  tests  where your test code is
 	pytest --cov=coge/ --cov-report=html tests/
 	open htmlcov/index.html
 
@@ -35,7 +35,7 @@ coverage:
 
 
 install: uninstall
-	pip3 install . 
+	pip3 install .
 
 uninstall:
 	pip3 uninstall  -y coge
@@ -47,7 +47,8 @@ main:
 dev:
 	# @python3 -m coge vue_template coge_name:vue_mall   coge_author:zk "Welcome to Your Vue.js App":'hello, coge'  @:vue_mall3 -w
 	rm -rdf ap
-	@python  main.py  python cli @:hello
+	# @python  main.py  python cli @:hello
+	@python main.py python3 -r files/Makfile
 
 
 version:
@@ -60,13 +61,13 @@ run:
 wrun:
 	watchexec -ce py 'python3 -m coge eat -c 2'
 
-all: rm uninstall install run 
+all: rm uninstall install run
 
 
 pure-all: env-rm rm env install test run
 
 
-	
+
 upload-to-test: rm
 	python3 setup.py bdist_wheel --universal
 	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
@@ -86,7 +87,7 @@ freeze-env: auto_version
 env-rm:
 	rm -rdf venv
 
-env-create: 
+env-create:
 	python3 -m venv venv
 
 env: env-create
@@ -102,7 +103,7 @@ venv_rm:
 venv: venv_rm
 	python3 -m venv --clear venv
 	pip install -r requirements.txt
-		
-requirements.txt: 
+
+requirements.txt:
 	pip3 freeze > requirements.txt
-	
+
