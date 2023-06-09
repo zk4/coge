@@ -1,9 +1,7 @@
 > How can I reuse a existing project or file as a template source effectively?
 
-![image-20210312140113821](https://raw.githubusercontent.com/zk4/image_backup/main/img/image-20210312140113821.png)
 
-Simple yet powerful code generator.
-Make use of existing tool as possiable as we can.
+![image-20210312140113821](https://raw.githubusercontent.com/zk4/image_backup/main/img/image-20210312140113821.png)
 
 template sources:
 1. folder
