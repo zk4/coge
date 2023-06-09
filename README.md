@@ -67,7 +67,7 @@ echo "init your git repo"
 git init
 ```
 
-## .coge.json
+## interactive keyword replacements
 Sometimes we do not remember what the string we should repalce,
 put a `.coge.json` in your template project.
 coge would respect this json file to verify all replacements.
