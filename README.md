@@ -17,12 +17,6 @@ Make use of existing tool as possiable as we can.
 pip3 install coge
 ```
 
-# usage
-put this line in your `~/.bash_profile`, and change the `your_template_folder` to  the folder where you put your templates.
-```
-export COGE_TMPLS="<your_template_folder>"
-```
-
 ## demo
 ``` bash
 cd js/react
@@ -36,6 +30,11 @@ coge js react oldkey:newkey @:destname
 
 # advanced tricks (optional)
 
+## customize template folder location
+put this line in your `~/.bash_profile`, and change the `your_template_folder` to  the folder where you put your templates.
+```
+export COGE_TMPLS="<your_template_folder>"
+```
 ## work with fzf
 ```
 cg () {
