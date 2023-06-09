@@ -9,10 +9,10 @@ template sources:
 3. content
 
 features:
-1. templates is just normal file or folder.
+1. template just normal file or folder.
 2. respect .gitignore.
 3. support github.com repo.
-5. lifecycle hook should works in any language the template by myself.
+5. lifecycle hook should work in any language cause the template is created by myself.
 7. respect original keyword case in replacement.
 
 ## install
