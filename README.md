@@ -5,12 +5,17 @@
 Simple yet powerful code generator.
 Make use of existing tool as possiable as we can.
 
-**Small features:**
-1. template is runnable as normal prj. No more %placehold% stuff.
-3. respect .gitignore.
+template sources:
+1. folder
+2. file
+3. content
+
+features:
+1. templates is just normal file or folder.
+2. respect .gitignore.
 3. support github.com repo.
-5. plugin in any language only if you can run it in shell.
-7. respect Old keyword case.
+5. lifecycle hook should works in any language the template by myself.
+7. respect original keyword case in replacement.
 
 ## install
 ```
