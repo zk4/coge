@@ -17,7 +17,7 @@ Make use of existing tool as possiable as we can.
 pip3 install coge
 ```
 
-## demo
+## usage
 ``` bash
 cd js/react
 coge -r .
