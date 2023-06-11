@@ -1,4 +1,4 @@
-> How can I reuse a existing project or file as a template source effectively?
+> How can I reuse existing project or file as a template source effectively?
 
 
 ![image-20210312140113821](https://raw.githubusercontent.com/zk4/image_backup/main/img/image-20210312140113821.png)
